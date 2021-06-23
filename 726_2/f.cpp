@@ -8,8 +8,8 @@ class Graph{
         map<int,int> initial;
         map<int,int> target;
         map<int,int> color;
-        int sum_blue;
-        int sum_red;
+        long long sum_blue;
+        long long sum_red;
 
         void addEdge(int a, int b);
         bool isBipartite(int a);
@@ -32,7 +32,7 @@ bool Graph::isBipartite(int a){
                         int last = q.front();
                         q.pop();
                         for(auto t: adj[last]){
-                                assert(color[last] != -1);
+    //                            assert(color[last] != -1);
                                 if(color[t] == -1) color[t] = color[last]==1?0:1;
                                 else if(color[t] == color[last]) return false;
                                 if(visited[t] != true){
@@ -56,11 +56,11 @@ bool Graph::isBipartite(int a){
 }
 void solve(){
                 Graph g;
-                assert(g.adj.size() == 0);
-                assert(g.sum_blue == 0);
+  //              assert(g.adj.size() == 0);
+//                assert(g.sum_blue == 0);
                 int n,m;
-                int sum_initial = 0;
-                int sum_target = 0;
+                long long sum_initial = 0;
+                long long sum_target = 0;
                 cin>>n>>m;
                 for(int i = 1; i <= n; i++) g.color[i]= -1;
                 for(int i = 1; i <=n; i++) {
@@ -71,15 +71,15 @@ void solve(){
                          cin>>g.target[i];
                          sum_target += g.target[i];
                 }
-                if(sum_target%2 != sum_initial%2){
-                         cout<<"NO\n";
-                         return;
-                }
                 for(int i = 1; i <= m; i++){
                         int a,b;
                         cin>>a>>b;
                         g.addEdge(a,b);
                         g.addEdge(b,a);
+                }
+                if(abs(sum_target)%2 != abs(sum_initial)%2){
+                         cout<<"NO\n";
+                         return;
                 }
                 if(g.isBipartite(1)){
                         if(g.sum_red == g.sum_blue){
