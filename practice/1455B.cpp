@@ -9,11 +9,18 @@ using namespace std;
 #define ll long long
 #define ld long double
 #define INF 1000000007
+#define fu(i,a,b) for(ll i = a; i<=b;i++)
+#define fd(i,a,b) for(ll i = a; i>=b; i--)
+#define fdd(i,a) for(ll i = a; i>=1; i--)
+#define fuu(i,a)for(ll i = 1; i<=a; i++)
 #define pb push_back
 #define pf push_front
 #define cinarr(a) for(auto &zz:a)cin>>zz
 #define mp make_pair
 #define allvec(v) v.begin(), v.end()
+#define vstr vector<string>
+#define vll vector<ll>
+#define vint vector<int>
 /**
  * I/O
  **/
@@ -39,36 +46,23 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) error(t<<" ");
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int n;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>>n;
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
+        int k;
+        k = ceil(sqrt((2*n) + 0.25) - 0.5);
+        int ans = k;
+        if (k*(k+1)/2 - n  == 1){
+                ans++;
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
-        }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        cout<<ans<<"\n";
 }
 
 
@@ -77,7 +71,7 @@ int32_t main() {
     cin.tie(NULL);
 	ll t = 1;
 	cin >> t;
-	for(int i = 0 ; i < t; i++) {
+	fuu(i, t) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}

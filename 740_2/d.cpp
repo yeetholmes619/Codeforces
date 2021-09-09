@@ -39,36 +39,29 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int mod,n;
+vector<int> v;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>>n>>mod;
+        v.clear();
+        v.resize(n,0);
+        v[0] = 1;
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
+        int pre = v[0];
+        for(int i  = 1; i < n; i++){
+                v[i] += pre%mod;
+                v[i] %= mod; 
+                pre += v[i];
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
-        }
+        debug(v);
+        cout<<v[n-1]<<"\n";
 
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
 }
 
 
@@ -76,7 +69,6 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

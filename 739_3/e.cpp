@@ -42,33 +42,12 @@ void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
-        }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
-        }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
 }
 
 

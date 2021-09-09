@@ -39,36 +39,44 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-int n, k;
+int n;
 vector<int> a;
 void take(){
-        cin>>n>>k;
+        cin>>n;
         a.clear();
-        a.resize(n);
-        cinarr(a);
+        a.resize(n+1);
+        for(int i = 1 ;i <= n; i++) cin>>a[i];
 }
-
+void f(int i){
+        int k;
+        if(a[i] <= a[i+1]) return;
+        k = a[i];
+        a[i] = a[i+1];
+        a[i+1] = k;
+}
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
+        a[0] = -1;
+        vector<int> q(n+1);
+        q[0] = -1;
+        for(int i = 1; i <= n; i++) q[i] = a[i];
+        sort(allvec(q));
+        int i;
+        for(i = 1; i <= n*n+5; i++){
+                if(q == a) break;
+                if((i)%2 == 0){
+                        for(int  j = 2; j <= n-1; j+=2) f(j);
+                }
+                else{
+                        for(int j = 1; j<= n-2; j+= 2){
+                                 f(j);
+                        }
+                }
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
-        }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        cout<<i-1<<"\n";  
 }
 
 

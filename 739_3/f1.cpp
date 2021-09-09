@@ -42,39 +42,55 @@ void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+set<int> s;
+set<int> s2;
+int n,k;
 void take(){
         cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
+        if(k == 1){
+                cout<<*s2.lower_bound(n)<<"\n";
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
+        else{
+                cout<<*s.lower_bound(n)<<"\n";
         }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
 }
-
 
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    //precompute all possible numbers.
+    for(int i = 0 ; i  < 10; i++){
+            for(int j  =i+1  ; j < 10 ;j++){
+                    for(int k = 1; k < 11; k++){
+                            for(int l = 0; l < (1<<k); l++){
+                                    int num = 0;
+                                    for(int m = 0; m < k; m++){
+                                            if((1<<m)&l){
+                                                    num += (int)pow(10,m) * i;
+                                            }
+                                            else{
+                                                    num += (int)pow(10,m)*j;
+                                            }
+                                    }
+                                    s.insert(num);
+                            }
+                    }
+            }
+    }
+
+    for(int i = 0; i < 10; i++){
+            int num = 0;
+            for(int j = 1; j < 11;j++){
+                    num *= 10;
+                    num += i;
+                    s2.insert(num);
+            }
+    }
+
 	ll t = 1;
 	cin >> t;
 	for(int i = 0 ; i < t; i++) {

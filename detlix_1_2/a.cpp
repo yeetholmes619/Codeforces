@@ -39,36 +39,35 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int c,d;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>>c>>d;
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
+        if((d == 0) and (c == 0)){
+                cout<<0<<"\n";
                 return;
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
+        if((c%2) + (d%2) == 1){
+                cout<<-1<<"\n";
+                return;
         }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        int a = (d+c)/2;
+        int b = (d-c)/2;
+        if(a == 0){
+                cout<<1<<"\n";
+        }
+        else if(b == 0){
+                cout<<1<<"\n";
+        }
+        else {
+                cout<<2<<"\n";
+        }
 }
 
 

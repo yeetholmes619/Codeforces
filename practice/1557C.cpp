@@ -8,21 +8,28 @@ using namespace std;
 #define BB    "\033[1m\033[34m"      /* Bold Blue */
 #define ll long long
 #define ld long double
+#define int long long
 #define INF 1000000007
+#define fu(i,a,b) for(ll i = a; i<=b;i++)
+#define fd(i,a,b) for(ll i = a; i>=b; i--)
+#define fdd(i,a) for(ll i = a; i>=1; i--)
+#define fuu(i,a)for(ll i = 1; i<=a; i++)
 #define pb push_back
 #define pf push_front
 #define cinarr(a) for(auto &zz:a)cin>>zz
-#define mp make_pair
 #define allvec(v) v.begin(), v.end()
+#define vstr vector<string>
+#define vll vector<ll>
+#define vint vector<int>
 /**
  * I/O
  **/
 using namespace std;
 #define int long long
 #define output(value) cout << value << endl
-#define error(errorString) cout << BR << errorString << RESET<< "\n"
-#define info(infoString) cout << BB << infoString << RESET << "\n"
-#define success(successString) cout << BB << successString << RESET << "\n"
+#define error(errorString) cout << BR << errorString << RESET
+#define info(infoString) cout << CYAN << infoString << RESET << endl
+#define success(successString) cout << GREEN << successString << RESET << endl
 #define allarr(a,n) a, a+n
 #define MOD 1000000007
 // precedence order :- double > float > long long int > long int > int > char
@@ -38,47 +45,69 @@ using namespace std;
 //you would do it in code, go step by step, in each step try to be concious of what you want to do
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
-void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
-        cerr<<"\n";
+long long power_mod(long long a, long long b){
+        long long m = MOD;
+        if(b == 0) return 1LL;
+        if(b == 1) return (a%m);
+        long long ans = 1;
+        while(b > 0){
+                if(b%2 == 1) ans = (ans*a)%m;
+                a = (a*a)%m;
+                b /=2;
+        }
+        return ans;
 }
-int n, k;
-vector<int> a;
-void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
-}
+int n,k;
+    /**
+// if n is odd:
+    in order to draw we need even number of 1s.
+    nC0 + nC2 + nC4 + nC6 + ....
+     = (2^(n-1) +1)^k;
 
-void solve(){
+    in order to win, we need all ones, so only one way
+    = 0;
+// if n is even:
+    in order to draw we still need even number of 1s
+    2^(n-1)-1;
+
+    in order to win there is still only one way
+    = 1;
+
+    **/
+ 
+
+
+void take() {
+        cin>>n>>k;
+}
+void solve() {
         take();
-        if(n == 1){
-                cout<<"YES\n";
+        if(k == 0){
+                cout<<1<<"\n";
                 return;
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
+        int d,ans = 0;
+        if(n%2 == 0) d = (power_mod(2LL,n-1)-1)%MOD;
+        else{
+                cout<<power_mod((power_mod(2LL,n-1) + 1),k)<<"\n";
+                return;
         }
+        for(int i = 0; i < k+1; i++){
+                ans += ((power_mod(d,i)%MOD)*(power_mod(power_mod(2LL,n)%MOD,max(k-i-1,0LL))%MOD))%MOD;
+                ans %= MOD;
+        }
+        ans %= MOD;
+        cout<<ans<<"\n";
+                
 
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
 }
-
 
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	ll t = 1;
 	cin >> t;
-	for(int i = 0 ; i < t; i++) {
-		//cout << "Case #" << i << ": ";
+	fuu(i, t) {
 		solve();
 	}
 }

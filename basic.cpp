@@ -1,6 +1,8 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
+#define curtime             chrono::high_resolution_clock::now()
+#define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
 #define BR   "\033[1m\033[31m"      /* Bold Red */
@@ -17,7 +19,6 @@ using namespace std;
 /**
  * I/O
  **/
-using namespace std;
 #define int long long
 #define output(value) cout << value << endl
 #define error(errorString) cout << BR << errorString << RESET<< "\n"
@@ -39,7 +40,7 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
 
@@ -54,10 +55,12 @@ void solve(){
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    auto time0 = curtime;
 	ll t = 1;
 	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}
+    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
 }

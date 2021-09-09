@@ -42,33 +42,44 @@ void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int n;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>> n;
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
+        string s = to_string(n);
+        int sol = 1e10;
+        for(int i = 0; i < 65; i++){
+                int p = 1LL<<i;
+                string pp = to_string(p);
+                int pn = pp.size();
+                int sn = s.size();
+                int it1 = 0;
+                int it2 = 0;
+                int ans = 0;
+                while((it2 < pp.size()) and (it1 < s.size())){
+                        if(s[it1] == pp[it2]){
+                                it1++;
+                                it2++;
+                        }
+                        else{
+                                ans++;
+                                it1++;
+                        }
+                }
+                if(it1 == sn and it2 == pn){
+                        sol = min(ans,sol);
+                }
+                else if(it1 == s.size()){
+                        sol =min(sol,ans+ pn- it2 );
+                }
+                else{
+                        sol = min(sol,ans + sn-it1);
+                }
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
-        }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        cout<<sol<<"\n";
 }
 
 

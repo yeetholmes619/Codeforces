@@ -39,37 +39,74 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+
+string addBinary(string a, string b)
+{
+    string result = ""; // Initialize result
+    int s = 0;          // Initialize digit sum
+ 
+    // Traverse both strings starting from last
+    // characters
+    int i = a.size() - 1, j = b.size() - 1;
+    while (i >= 0 || j >= 0 || s == 1)
+    {
+        // Comput sum of last digits and carry
+        s += ((i >= 0)? a[i] - '0': 0);
+        s += ((j >= 0)? b[j] - '0': 0);
+ 
+        // If current digit sum is 1 or 3, add 1 to result
+        result = char(s % 2 + '0') + result;
+ 
+        // Compute carry
+        s /= 2;
+ 
+        // Move to next digits
+        i--; j--;
+    }
+    for(int i = 0; i < result.size(); i++){
+            if(result[i] == 1){
+                    result = result.substr(i,result.size()-i);
+                    break;
+            }
+    }
+    cerr<<result<<"\n";
+    return result;
+}
+int n;
+string s;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>>n;
+        cin>>s;
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
+        int l1,r1,l2,r2;
+        for(int i = n/2; i < n; i++){
+                for(int j = 0; j < n-i;j++){
+                        l1 = j; l2 = j+i-1;
+                        string temp = s.substr(j,i);
+                        string t = temp;
+                        for(int k = 0; k < n-i; k++){
+                                t = addBinary(t,temp);
+                                for(int l = 0; l < n-t.size(); l++){
+                                        if(t == s.substr(k,t.size())){
+                                                l2 = l, r2 = l2 + t.size()-1;
+                                        }
+                                }
+                        }
+                }
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
-        }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        l1++;
+        l2++;
+        r1++;
+        r2++;
+        cout<<l1<<" "<<r1<<" "<<l2<<" "<<r2<<"\n";
 }
+
 
 
 int32_t main() {

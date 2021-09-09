@@ -39,36 +39,56 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int Balanced_Substring(vector<int>str, int n)
+{
+	// To store required answer
+	int ans = 0;
+
+	// Vector to stores the number of
+	// balanced brackets at each depth.
+	vector<int> arr(n / 2 + 1, 0);
+
+	// d stores checks the depth of our sequence
+	// For example level of () is 1
+	// and that of (()) is 2.
+	int d = 0;
+	for (int i = 0; i < n; i++) {
+		// If open bracket
+		// increase depth
+		if (i%2 == 2)
+			d+= str[i];
+
+		// If closing bracket
+		else {
+			//if (d == 1) {
+			//	for (int j = 2; j <= n / 2 + 1 && arr[j] != 0; j++)
+			//		arr[j] = 0;
+			//}
+			ans += min(str[i];
+			ans += str[i]*arr[d];
+			arr[d] += str[i];
+			d -= str[i];
+		}
+	}
+
+	// Return the required answer
+	return ans;
+}
+int n;
+vector<int> v;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>>n;
+        v.clear();
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
-        }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
-        }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        cout<<Balanced_Substring(v,n)<<"\n";
 }
 
 
@@ -76,7 +96,6 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

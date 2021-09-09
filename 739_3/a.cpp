@@ -42,33 +42,22 @@ void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
-void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+bool check(int a){
+        int t;
+        while(a){
+                if(a%10 == 3) return false;
+                a /=10;
+        }
+        return true;
 }
-
+int k;
+void take(){
+        cin>>k;
+}
+vector<int> v;
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
-        }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
-        }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        cout<<v[k-1]<<"\n";
 }
 
 
@@ -77,6 +66,15 @@ int32_t main() {
     cin.tie(NULL);
 	ll t = 1;
 	cin >> t;
+    int a = 1;
+    while(v.size() != 1020){
+            if(a%3 == 0) a++;
+            else if(a%10 == 3) a++;
+            else{
+                    v.pb(a);
+                    a++;
+            }
+    }
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

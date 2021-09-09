@@ -1,6 +1,8 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
+#define curtime             chrono::high_resolution_clock::now()
+#define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
 #define BR   "\033[1m\033[31m"      /* Bold Red */
@@ -17,7 +19,6 @@ using namespace std;
 /**
  * I/O
  **/
-using namespace std;
 #define int long long
 #define output(value) cout << value << endl
 #define error(errorString) cout << BR << errorString << RESET<< "\n"
@@ -39,46 +40,59 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int n;
+string s;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>>n;
+        cin>>s;
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
+        vector<int>v;
+        vector<int>w;
+        for(int i = 0; i < n; i++){
+                if(s[i] == '1') v.pb(i);
+                else w.pb(i);
+        }
+        if((w.size() < 3) and (w.size() != 0)){
+                cout<<"NO\n";
                 return;
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
+        string k = "";
+        for(int i = 0; i < n; i++) k += '=';
+        vector<string> ans;
+        for(int i =0 ; i < n; i++){
+                ans.pb(k);
+                ans[i][i] = 'X';
         }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        for(int i = 1; i < w.size(); i++){
+                ans[w[i]][w[i-1]] = '+';
+                ans[w[i-1]][w[i]] = '-';
+        }
+        if(w.size() != 0) {
+                ans[w[0]][w[w.size()-1]] = '+';
+                ans[w[w.size()-1]][w[0]] = '-';
+        }
+        cout<<"YES\n";
+        for(int i = 0; i < n; i++){
+                cout<<ans[i]<<"\n";
+        }
 }
 
 
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    auto time0 = curtime;
 	ll t = 1;
 	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}
+    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
 }

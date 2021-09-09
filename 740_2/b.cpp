@@ -42,34 +42,31 @@ void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int a,b;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>>a>>b;
 }
 
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
-                return;
+        int na,nb;
+        int n = a+b;
+        set<int> ans;
+        na = n/2;
+        nb = n/2 + n%2;
+        for(int i = max(0LL,a-nb); i <= min(a,na); i++){
+                ans.insert(a-i + min(b,na-i));
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
+        nb = n/2;
+        na = n/2 + n%2;
+        for(int i = max(0LL,a-nb); i <= min(a,na); i++){
+                ans.insert(a-i + min(b,na-i));
         }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
-}
+        
+        cout<<ans.size()<<"\n";
+        for(auto t: ans) cout<<t<<" ";
+        cout<<"\n";
+} 
 
 
 int32_t main() {

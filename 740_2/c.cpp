@@ -42,33 +42,50 @@ void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int n;
+vector<pair<int,int>> a;
 void take(){
-        cin>>n>>k;
+        cin>>n;
         a.clear();
-        a.resize(n);
-        cinarr(a);
+        for(int i =0; i < n; i++){
+                int k;
+                int big = -1;
+                int ind = -1;
+                cin>>k;
+                for(int j= 0 ;j < k; j++){
+                        int t;
+                        cin>>t;
+                        if(big < t){
+                                big = t;
+                                ind = j;
+                        }
+                }
+                a.pb(mp(big-ind+1,k));
+//                cerr<<BR<<a[i].first<<" "<<a[i].second<<" ";
+        }
+//        cerr<<RESET<<"\n";
 }
-
+bool cmp(pair<int,int> a, pair<int,int> b){
+        if(a.first != b.first) return a.first < b.first;
+        else return a.second > b.second;
+}
 void solve(){
         take();
-        if(n == 1){
-                cout<<"YES\n";
+        sort(allvec(a),cmp);
+        int temp = 0;
+        for(int i =0 ; i < n-1; i++) temp += a[i].second;
+        int ans = max(a[n-1].first - temp,a[0].first);
+        if(n == 1) {
+                cout<<ans<<"\n";
                 return;
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
         for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
+                int cache = ans + a[i-1].second;
+                if(cache < a[i].first){
+                        ans += a[i].first-cache;
+                }
         }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        cout<<ans<<"\n";
 }
 
 

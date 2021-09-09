@@ -39,36 +39,55 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-int n, k;
-vector<int> a;
+int n;
+vector<int> v;
 void take(){
-        cin>>n>>k;
-        a.clear();
-        a.resize(n);
-        cinarr(a);
+        cin>>n;
+        v.clear();
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
         if(n == 1){
-                cout<<"YES\n";
+                cout<<0<<"\n";
                 return;
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
+        vector<int> z;
+        for(int  i =1 ; i <= n; i++){
+                if(v[i-1]%2 == 0) z.pb(i);
+        }
+        int co = n - z.size();
+        int cz = z.size();
+        if(abs(co - cz) > 1){
+                cout<<-1<<"\n";
+                return;
+        }
+        else{
+                        int ans1 = 0, ans2 = 0;
+                        int k = 2;
+                        int kk = 1;
+                        for(int i = 0; i < cz; i++){
+                                ans1 += abs(z[i] - k);
+                                ans2 += abs(z[i] - kk);
+                                k += 2;
+                                kk += 2;
+                        }
+                        if(cz == co){
+                                cout<<min(ans1,ans2)<<"\n";
+                        }
+                        else if(cz > co){
+                                cout<<ans2<<"\n";
+                        }
+                        else{
+                                cout<<ans1<<"\n";
+                        }
         }
 
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
 }
 
 

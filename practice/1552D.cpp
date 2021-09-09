@@ -9,11 +9,18 @@ using namespace std;
 #define ll long long
 #define ld long double
 #define INF 1000000007
+#define fu(i,a,b) for(ll i = a; i<=b;i++)
+#define fd(i,a,b) for(ll i = a; i>=b; i--)
+#define fdd(i,a) for(ll i = a; i>=1; i--)
+#define fuu(i,a)for(ll i = 1; i<=a; i++)
 #define pb push_back
 #define pf push_front
 #define cinarr(a) for(auto &zz:a)cin>>zz
 #define mp make_pair
 #define allvec(v) v.begin(), v.end()
+#define vstr vector<string>
+#define vll vector<ll>
+#define vint vector<int>
 /**
  * I/O
  **/
@@ -39,36 +46,63 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) error(t<<" ");
         cerr<<"\n";
 }
-int n, k;
+int n;
 vector<int> a;
 void take(){
-        cin>>n>>k;
+        cin>>n;
         a.clear();
         a.resize(n);
         cinarr(a);
 }
+/**
+    say there is an n numbered arrays
+    a1, a2, a3, a4 ......, an
 
+    now lets make a prefix array
+    pa = a1, a2+a1, a2+a1+a3, ... ∑ai
+
+    now we need to make an array b : b1,b2,b3,b4,...bn.
+
+    now the prefix array that I made gets all the elements except a1.
+
+    edge cases:
+        when there is a 0 in a, or when there is a modulus repitition in a
+    now any one of the elements can be represented as a sum or difference of some amount of the rest of
+    the elements.
+
+**/
+bool possible(int sum,int target,int index){
+        if(index >= n) return false;
+        if(sum == target) return true;
+        if(a[index] == target) return possible(sum,target,index+1);
+        return (possible(sum+a[index],target,index+1) or possible(sum-a[index],target,index+1) or possible(sum,target,index+1));
+}
 void solve(){
         take();
-        if(n == 1){
+        sort(allvec(a));
+        unordered_set<int> s;
+        for(int i = 0; i < n; i++){
+                if(a[i] == 0){
+                        cout<<"YES\n";
+                        return;
+                }
+                s.insert(a[i]);
+        }
+        if(s.size() < n){
                 cout<<"YES\n";
                 return;
         }
-        int l = 1;
-        vector<int> b = a;
-        sort(allvec(b));
-        map<int,int> m; 
-        for(int i  = 0 ;i < n; i++) m[b[i]] = i;
-        for(int i = 1; i < n; i++){
-                if(m[a[i]] - m[a[i-1]] != 1) l++;
+        for(int i = 0; i < n; i++){
+                if(possible(0,a[i],0)){
+                        cout<<"YES\n";
+                        return;
+                }
         }
-
-
-        if(l <= k) cout<<"YES\n";
-        else cout<<"NO\n";
+        cout<<"NO\n";
+        return;
 }
 
 
@@ -77,7 +111,7 @@ int32_t main() {
     cin.tie(NULL);
 	ll t = 1;
 	cin >> t;
-	for(int i = 0 ; i < t; i++) {
+	fuu(i, t) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}

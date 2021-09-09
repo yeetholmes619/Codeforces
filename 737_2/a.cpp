@@ -43,18 +43,33 @@ using namespace std;
 void debug(vector<int> v)
 {
 	for (auto t : v)
-		cerr << BR << t << "\n"
+		cerr << BR << t << " "
 			 << RESET;
 	cerr << "\n";
 }
-
-void take()
-{
+int n;
+vector<int> a;
+void take(){
+        cin>>n;
+        a.clear();
+        a.resize(n);
+        cinarr(a);
 }
 
-void solve()
-{
+void solve(){
 	take();
+    sort(allvec(a));
+    for(int i = 1; i < n; i++){
+            a[i] += a[i-1];
+    }
+    double ans = -1 * 1e10;
+    for(int i = 0; i < n; i++){
+            double x = 1.0*a[i]/(i+1);
+            double y = 1.0*(a[n-1] - a[i])/(n - i -1);
+            //if((ans - (x+y)) >= 1.0/(1e6)) ans = x+y;
+            ans = max(ans,x+y);
+    }
+    cout<<fixed<<setprecision(7)<<ans<<"\n";
 }
 
 int32_t main()
