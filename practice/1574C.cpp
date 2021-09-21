@@ -66,36 +66,23 @@ void take(){
 void solve(){
         take();
         sort(allvec(h));
-        int sum = 0;
-        for(auto t: h) sum += t;
+        int s = 0;
+        for(auto t: h) s += t;
         for(int i =0 ; i < m ; i++){
                 int g = 0;
                 int it = lower_bound(allvec(h),d[i].first) - h.begin();
-                error(it);
-                if((it == 0) or (it == n)){
-                        if(it == 0){
-                                g += d[i].second-sum+h[0];
-                                g = max(g,0LL);
-                                cout<<max(g,0LL)<<"\n";
-                        }
-                        else{
-                                g += d[i].second-sum+h[n-1];
-                                g = max(g,0LL);
-                                g += d[i].first - h[n-1];
-                                g = max(g,0LL);
-                                cout<<max(g,0LL)<<"\n";
-                        }
+                if(it == n){
+                       g += max(0LL,d[i].first-h[it-1]) + max(0LL,d[i].second - s + h[it-1]);
+                       cout<<g<<"\n";
+                }
+                else if(it == 0){
+                        g += max(0LL,d[i].second - s + h[it]);
+                        cout<<g<<"\n";
                 }
                 else{
-                        int c1 = 0;
-                        int c2 = 0;
-                        c1 += h[it] - d[i].first;
-                        c1 = max(0LL,c1);
-                        c2 +=  d[i].first- h[it-1];
-                        c2 = max(0LL,c2);
-                        c1 += max(-1*(sum - h[it]- d[i].second),0LL);
-                        c1 += max(-1*(sum - h[it-1]- d[i].second),0LL);
-                        cout<<min(c1,c2)<<"\n";
+                        g += max(0LL,d[i].first - h[it]) + max(0LL,d[i].second - s + h[it]);
+                        g = min(g , max(0LL, d[i].first - h[it-1]) + max(0LL,d[i].second - s + h[it-1]));
+                        cout<<g<<"\n";
                 }
         }
 }
