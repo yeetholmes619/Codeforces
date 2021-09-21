@@ -49,23 +49,55 @@ void debug(vector<int> v){
         for(auto t: v) error(t<<" ");
         cerr<<"\n";
 }
-int a,b,c,m;
+int n,m;
+vector<int> h;
+vector<pair<int,int>> d;
 void take(){
-        cin>>a>>b>>c>>m;
+        cin>>n;
+        h.resize(n);
+        cinarr(h);
+        cin>>m;
+        d.resize(m);
+        for(int i = 0; i < m; i++){
+                cin>>d[i].first>>d[i].second;
+        }
 }
 
 void solve(){
         take();
-        vector<int>v;
-        v.pb(a);
-        v.pb(b);
-        v.pb(c);
-        sort(allvec(v),greater<int>());
-        if(((max({a,b,c})-1 - v[2]-v[1]) <= m) and  (m <= (a+b+c-3))){
-                cout<<"YES\n";
-                return;
+        sort(allvec(h));
+        int sum = 0;
+        for(auto t: h) sum += t;
+        for(int i =0 ; i < m ; i++){
+                int g = 0;
+                int it = lower_bound(allvec(h),d[i].first) - h.begin();
+                error(it);
+                if((it == 0) or (it == n)){
+                        if(it == 0){
+                                g += d[i].second-sum+h[0];
+                                g = max(g,0LL);
+                                cout<<max(g,0LL)<<"\n";
+                        }
+                        else{
+                                g += d[i].second-sum+h[n-1];
+                                g = max(g,0LL);
+                                g += d[i].first - h[n-1];
+                                g = max(g,0LL);
+                                cout<<max(g,0LL)<<"\n";
+                        }
+                }
+                else{
+                        int c1 = 0;
+                        int c2 = 0;
+                        c1 += h[it] - d[i].first;
+                        c1 = max(0LL,c1);
+                        c2 +=  d[i].first- h[it-1];
+                        c2 = max(0LL,c2);
+                        c1 += max(-1*(sum - h[it]- d[i].second),0LL);
+                        c1 += max(-1*(sum - h[it-1]- d[i].second),0LL);
+                        cout<<min(c1,c2)<<"\n";
+                }
         }
-        else cout<<"NO\n";
 }
 
 
@@ -73,7 +105,6 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	ll t = 1;
-	cin >> t;
 	fuu(i, t) {
 		//cout << "Case #" << i << ": ";
 		solve();
