@@ -66,11 +66,12 @@ void Graph::addEdge(int a, int b){
 bool Graph::findtopo(int node, map<int,int> &status, vector<int> &result){
         if(status[node] == 0) status[node] = 1; 
         else return false;
-        priority_queue<int> pq;
-        for(auto t: adj[node]) pq.push(-1*t);
-        while(pq.size()){
-                int t = pq.top(); pq.pop();
-                t *= -1;
+//        priority_queue<int> pq;
+//        for(auto t: adj[node]) pq.push(-1*t);
+//        while(pq.size()){
+//                int t = pq.top(); pq.pop();
+//                t *= -1;
+          for(auto t: adj[node]){
                 if(status[t] != 2){
                         bool check  = findtopo(t,status,result);
                         if(!check) return false;
@@ -128,10 +129,11 @@ void solve(){
                 vector<int> dp(n+1,1);
                 int ans = -1;
                 for(int i = 0; i  < n; i++){
-                        priority_queue<int> pq;
-                        for(auto t: g.adj[res[i]]) pq.push(-1*t);
-                        while(pq.size()){
-                                int t = -1*pq.top();pq.pop();
+                      //  priority_queue<int> pq;
+                      //  for(auto t: g.adj[res[i]]) pq.push(-1*t);
+                      //  while(pq.size()){
+                      //          int t = -1*pq.top();pq.pop();
+                          for(auto t: g.adj[res[i]]){
                                 if(t < res[i]) dp[t] = max(dp[t],dp[res[i]] + 1);
                                 else dp[t] = max(dp[t],dp[res[i]]);
                                 //dp[t] = max(dp[t],dp[res[i]] + 1);
