@@ -74,7 +74,7 @@ long long eulerTotient(long long n){
         long long ans = 1;
         for(int i = 2; i < prime.size(); i++){
                 if(n%i == 0 && prime[i]){
-                        long long nulm = time(i,n);
+                        long long nulm = times(i,n);
                         num *= pow(i ,nulm-1);
                         num *= i-1;
                         //den *= pow(i,nulm);
@@ -109,73 +109,6 @@ ll modInverse(ll a, ll m){
         if (((a%m) * (x%m)) % m == 1)
             return x;
 }
-//Miller Rabin start
-using u64 = uint64_t;
-using u128 = __uint128_t;
-
-u64 binpower(u64 base, u64 e, u64 mod = MOD) {
-    u64 result = 1;
-    base %= mod;
-    while (e) {
-        if (e & 1)
-            result = (u128)result * base % mod;
-        base = (u128)base * base % mod;
-        e >>= 1;
-    }
-    return result;
-}
-
-bool check_composite(u64 n, u64 a, u64 d, int s) {
-    u64 x = binpower(a, d, n);
-    if (x == 1 || x == n - 1)
-        return false;
-    for (int r = 1; r < s; r++) {
-        x = (u128)x * x % n;
-        if (x == n - 1)
-            return false;
-    }
-    return true;
-};
-
-bool MillerRabin(u64 n, int iter=5) { // returns true if n is probably prime, else returns false.
-    if (n < 4)
-        return n == 2 || n == 3;
-
-    int s = 0;
-    u64 d = n - 1;
-    while ((d & 1) == 0) {
-        d >>= 1;
-        s++;
-    }
-
-    for (int i = 0; i < iter; i++) {
-        int a = 2 + rand() % (n - 3);
-        if (check_composite(n, a, d, s))
-            return false;
-    }
-    return true;
-}
-
-bool MillerRabin_accurate(u64 n) { // returns true if n is prime, else returns false.
-    if (n < 2)
-        return false;
-
-    int r = 0;
-    u64 d = n - 1;
-    while ((d & 1) == 0) {
-        d >>= 1;
-        r++;
-    }
-
-    for (int a : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}) {
-        if (n == a)
-            return true;
-        if (check_composite(n, a, d, r))
-            return false;
-    }
-    return true;
-}
-//Miller Rabin End
 vector<bool> segmentedSieve(long long L, long long R) {
     // generate all primes up to sqrt(R)
     long long lim = sqrt(R);
@@ -250,13 +183,13 @@ void solve() {
         take();
 }
 
-int main() {
+int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 	ll t = 1;
 	cin >> t;
 	fuu(i, t) {
-		cout << "Case #" << i << ": ";
+		//cout << "Case #" << i << ": ";
 		solve();
 	}
 }
