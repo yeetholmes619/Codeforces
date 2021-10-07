@@ -1,6 +1,8 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
+#define curtime             chrono::high_resolution_clock::now()
+#define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
 #define BR   "\033[1m\033[31m"      /* Bold Red */
@@ -17,7 +19,6 @@ using namespace std;
 /**
  * I/O
  **/
-using namespace std;
 #define int long long
 #define output(value) cout << value << endl
 #define error(errorString) cout << BR << errorString << RESET<< "\n"
@@ -38,67 +39,56 @@ using namespace std;
 //you would do it in code, go step by step, in each step try to be concious of what you want to do
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
-vector<long long> tree;
-long long mid(long long a, long long b){ return (a+b)/2;}
-
-long long getSum(int node,int node_low,int node_high,int query_low, int query_high){
-        if((query_low <= node_low)&&(query_high >= node_high)) return tree[node];
-        if((query_low > node_high)||(query_high < node_low)) return 0;
-        return getSum((node*2), node_low, mid(node_low,node_high),query_low,query_high) + getSum(((node*2)+1), mid(node_low,node_high)+1, node_high,query_low,query_high);
-}
-void change_rec(int node,int node_low,int node_high,int query_low, int query_high,int v){
-        if((query_low <= node_low)&&(query_high >= node_high)){
-                tree[node] = v;
-                return;
-        }
-        if((query_low > node_high)||(query_high < node_low)) return;
-        change_rec((node*2), node_low, mid(node_low,node_high),query_low,query_high,v);
-        change_rec(((node*2)+1), mid(node_low,node_high)+1, node_high,query_low,query_high,v);
-        tree[node] = tree[node*2] + tree[node*2+1];
-}
-void change(int pos,long long updated_val, int n){
-        int i = n + pos;
-        tree[i] = updated_val;
-        i=i/2;
-        while(i != 0){
-                tree[i] = tree[2*i] + tree[2*i+1];
-                i /= 2;
-        }
-}
 void debug(vector<int> v){
-        for(auto t: v) cerr<<BR<<t<<"\n"<<RESET;
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-
-void buildtree(vector<int> a){
-        int n = a.size();
-        //make a power of 2
-        while(__builtin_popcount(n) != 1){
-                a.push_back(0);
-                n++;
-        }
-
-        //construct tree
-        tree.resize(2*n);
-        for(int i = 0; i <= n-1; i++) tree[n+i] = a[i];
-        for(int i = n-1; i >=1; i--) tree[i] = tree[i*2] + tree[(i*2)+1];
-}
-
+int n;
+vector<int> v;
 void take(){
+        cin>>n;
+        v.clear();
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        priority_queue<pair<int,int>> pq;
+        for(int i =0 ; i < n; i++){
+                if(v[i] != 0) pq.push(mp(v[i],i+1));
+        }
+        vector<vector<int>> moves;
+        int ans = 0;
+        while(pq.size() >= 2){
+                pair<int,int> a = pq.top();
+                pq.pop();
+                pair<int,int> b = pq.top();
+                pq.pop();
+                if((a.first == 0) or (b.first == 0)) break;
+                ans += 1;
+                a.first--;
+                b.first--;
+                moves.push_back(vector<int>{a.second,b.second,1});
+                if(a.first)pq.push(a);
+                if(b.first)pq.push(b);
+        }
+        cout<<ans<<"\n";
+        for(auto t: moves){
+                for(int i =0 ; i < t[2]; i++) cout<<t[0]<<" "<<t[1]<<"\n";
+        }
 }
 
 
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    auto time0 = curtime;
 	ll t = 1;
 	cin >> t;
-	for(int i = 0 ;i  < t; i++) {
+	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}
+    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
 }
