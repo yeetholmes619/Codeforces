@@ -84,7 +84,7 @@ class segtree{
 	}
     
     void fix(int node){
-
+            if(node < 0) return;
             merge(tree[node*2 + 1], tree[ node*2 + 2],tree[node]);
             if(node == 0) return;
             fix((node - 1)/2);
@@ -119,10 +119,49 @@ class segtree{
             if(size != 1) fix((size-2+pos)/2);
     }
 };
+int n,m;
+vector<int> v;
 void take(){
+        cin>>n>>m;
+        v.resize(n);
+        cinarr(v);
 }
 void solve(){
         take();
+       // if(n != 1){
+                segtree<int> st(v,0);
+                while(m--){
+                        int c;
+                        cin>>c;
+                        if(c == 1){
+                                int i,v;
+                                cin>>i>>v;
+                                st.update(i,v);
+                        }
+                        else{
+                                int l,r;
+                                cin>>l>>r;
+                                r--;
+                                cout<<st.query(l,r)<<"\n";
+                        }
+                }
+      //  }
+      //  else{
+      //          while(m--){
+      //                  int c;
+      //                  cin>>c;
+      //                  if(c == 1){
+      //                          int i,vv;
+      //                          cin>>i>>vv;
+      //                          v[0] = vv;
+      //                  }
+      //                  else{
+      //                          int l,r;
+      //                          cin>>l>>r;
+      //                          cout<<v[0]<<"\n";
+      //                  }
+      //          }
+      // }
 }
 
 
@@ -136,5 +175,5 @@ int32_t main() {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}
-    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
+    cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
 }
