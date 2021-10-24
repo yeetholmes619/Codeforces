@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -41,30 +39,30 @@ using namespace std;
 //you would do it in code, go step by step, in each step try to be concious of what you want to do
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
-template<class T>
-void debug(vector<T> v){
+void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
+const int m = MOD;
+long long power_mod(long long a, long long b){
+        if(b == 0) return 1LL;
+        if(b == 1) return (a%m);
+        long long ans = 1;
+        while(b > 0){
+                if(b%2 == 1) ans = (ans*a)%m;
+                a = (a*a)%m;
+                b /=2;
+        }
+        return ans;
 }
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
-}
-
+int n;
 void take(){
+        cin>>n;
 }
 
 void solve(){
         take();
+        cout<<(6*power_mod(4,((1LL<<n)-2)))%m<<"\n";
 }
 
 
@@ -73,7 +71,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

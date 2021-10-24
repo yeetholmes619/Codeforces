@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -41,30 +39,41 @@ using namespace std;
 //you would do it in code, go step by step, in each step try to be concious of what you want to do
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
-template<class T>
-void debug(vector<T> v){
+void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
-}
-
+vector<string> path;
+int n;
 void take(){
+        cin>>n;
+        path.pb(string(n+2,'1'));
+        string s;
+        cin>>s;
+        s += '1';
+        s = '1' + s;
+        path.pb(s);
+        cin>>s;
+        s += '1';
+        s = '1' + s;
+        path.pb(s);
+        path.pb(string(n+2,'1'));
 }
+bool check(int x, int y){
+        if(path[x][y] == '1') return false;
+        if((x == 2) and (y == n)) return true;
+
+        path[x][y] = '1';
+        bool ans = false;
 
 void solve(){
         take();
+        if(check(1,1)){
+                cout<<"YES\n";
+        }
+        else{
+                cout<<"NO\n";
+        }
 }
 
 

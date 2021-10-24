@@ -1,8 +1,6 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define curtime             chrono::high_resolution_clock::now()
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
@@ -46,18 +44,31 @@ void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
+struct item{
+        int total_sum;
+        int prefix;
+        int suffix;
+        int ans;
+        item(int val = 0){
+                if(val >= 0){
+                        total_sum = val;
+                        prefix = val;
+                        suffix = val;
+                        ans = val;
+                }
+                else{
+                        total_sum = val;
+                        prefix = 0;
+                        suffix = 0;
+                        ans = 0;
+                }
+        }
+};
+void merge(item a, item b, item &c){
+        c.total_sum = a.total_sum + b.total_sum;
+        c.ans = max(a.ans , max(b.ans, a.suffix+ b.prefix));
+        c.prefix = max(a.prefix, a.total_sum + b.prefix);
+        c.suffix = max(b.suffix, b.total_sum + a.suffix);
 }
 void xr(int a, int b, int&c){
         c = a^b;
@@ -134,10 +145,30 @@ class segtree{
             if(size != 1) fix((size-2+pos)/2);
     }
 };
+int n,m;
+vector<item> v;
 void take(){
+        cin>>n>>m;
+        for(int i = 0; i < n; i++){
+                int k;
+                cin>>k;
+                v.pb(item(k));
+        }
 }
 void solve(){
         take();
+        item neutral = item(0);
+        segtree<item> st(v,neutral,&merge);
+        item sol = st.query(0,n-1);
+        cout<<sol.ans<<"\n";
+        while(m--){
+                int index,val;
+                cin>>index>>val;
+                st.update(index,val);
+                sol = st.query(0,n-1);
+                cout<<sol.ans<<"\n";
+        }
+
 }
 
 

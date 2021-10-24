@@ -1,8 +1,6 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define curtime             chrono::high_resolution_clock::now()
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
@@ -46,19 +44,6 @@ void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
-}
 void xr(int a, int b, int&c){
         c = a^b;
 }
@@ -85,6 +70,7 @@ class segtree{
 		for(int i = size-2; i > -1; i--){
 			merge(tree[2*i+1],tree[2*i + 2], tree[i]);
 		}
+//        debug(tree);
 	}
 
 	T query(int node, int node_start, int node_end, int query_start, int query_end){
@@ -104,8 +90,24 @@ class segtree{
             if(node == 0) return;
             fix((node - 1)/2);
     }
+    int answer(int k, int node){
+            if(node> size - 2){
+                    return node - size + 1;
+            }
+            else{
+                    if(tree[node*2 + 1]  < k){
+                            return answer(k - tree[node*2 + 1],node*2 + 2);
+                    }
+                    else{
+                            return answer(k,node*2 + 1);
+                    }
+            }
+    }
 
 	public:
+    int answer(int k){
+            return answer(k,0);
+    }
 	segtree(vector<T> in ,T neu,void (*fun)(T,T,T&) = &combine){
 		size = in.size();
 		neutral = neu;
@@ -134,10 +136,30 @@ class segtree{
             if(size != 1) fix((size-2+pos)/2);
     }
 };
+int n,m;
+vector<int> v;
 void take(){
+        cin>>n>>m;
+        v.resize(n);
+        cinarr(v);
 }
 void solve(){
         take();
+        segtree<int> st(v,0);
+        while(m--){
+                int choice;
+                cin>>choice;
+                if(choice == 1){
+                        int index;
+                        cin>>index;
+                        st.update(index, 1^(st.query(index,index)));
+                }
+                else{
+                        int k;
+                        cin>>k;
+                        cout<<st.answer(k+1)<<"\n";
+                }
+        }
 }
 
 

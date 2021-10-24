@@ -1,8 +1,6 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define curtime             chrono::high_resolution_clock::now()
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
@@ -45,19 +43,6 @@ template<class T>
 void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
-}
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
 }
 void xr(int a, int b, int&c){
         c = a^b;
@@ -104,8 +89,16 @@ class segtree{
             if(node == 0) return;
             fix((node - 1)/2);
     }
-
+    int findk(int k, int node){
+//            cerr<<k<<" "<<node<<"\n";
+            if(node >= size-1) return node - size + 1;
+            if(k > tree[node*2+2]) return findk(k-tree[node*2+2], node*2+1);
+            else return findk(k,node*2+2);
+    }
 	public:
+    int findk(int k){
+            return findk( k,  0);
+    }
 	segtree(vector<T> in ,T neu,void (*fun)(T,T,T&) = &combine){
 		size = in.size();
 		neutral = neu;
@@ -116,6 +109,7 @@ class segtree{
 		}
 		tree.resize(2*size - 1,neutral);
 		build(in);
+//        debug(tree);
 	}
 	segtree(int n, T neu, void (*fun)(T, T, T&)  = &combine){
 		size = n;
@@ -134,10 +128,25 @@ class segtree{
             if(size != 1) fix((size-2+pos)/2);
     }
 };
+int n;
+vector<int> inversions;
 void take(){
+        cin>>n;
+        inversions.resize(n);
+        cinarr(inversions);
 }
 void solve(){
         take();
+        segtree<int> st(vector<int>(n,1),0);
+        vector<int> answer(n,0);
+        for(int i = n-1; i > -1; i--){
+                int swp = st.findk(inversions[i]+1);
+
+                answer[i] = swp+1;
+                st.update(swp,0);
+        }
+        for(auto t: answer) cout<<t<<" ";
+//        for(int i = n-1; i > -1; i--) cout<<answer[i]<<" ";
 }
 
 

@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -59,12 +57,59 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n;
 void take(){
+        cin>>n;
 }
 
 void solve(){
         take();
+        int ans1 = 0, ans2 = 0;
+        int temp = n;
+        int temp2 = n;
+        //if unit digit 5 is possible
+        while((temp%10) != 5){
+                temp /= 10;
+                ans1++;
+                if(temp == 0){
+                        ans1 = INT_MAX;
+                        break;
+                }
+        }
+        temp /= 10;
+        if(ans1 != INT_MAX){
+                while(((temp%10) != 2) and ((temp%10) != 7)){
+                        temp /= 10;
+                        ans1++;
+                        if(temp == 0){
+                                ans1 = INT_MAX;
+                                break;
+                        }
+                }
+        }
+        temp = n;
+        while((temp%10) != 0){
+                temp /= 10;
+                ans2++;
+                if(temp == 0){
+                        ans2 = INT_MAX;
+                        break;
+                }
+        }
+        temp /= 10;
+        if(ans2 != INT_MAX){
+                while(((temp%10) != 0) and ((temp%10) != 5)){
+                        temp /= 10;
+                        ans2++;
+                        if(temp == 0){
+                                ans2 = INT_MAX;
+                                break;
+                        }
+                }
+        }
+
+        cout<<min(ans1,ans2)<<"\n";
+
 }
 
 

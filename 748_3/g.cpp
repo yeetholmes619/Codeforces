@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"

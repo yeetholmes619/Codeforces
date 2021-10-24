@@ -59,12 +59,21 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n,k;
 void take(){
+        cin>>n>>k;
 }
 
 void solve(){
         take();
+        vector<int> ans;
+        int it = 1;
+        for(int i =0 ; i < 32; i++){
+                if(n&it) ans.pb(i);
+                it *= 2;
+        }
+        cout<<ans.size()<<"\n";
+        for(auto t: ans) cout<<t+k+1<<" ";
 }
 
 
@@ -73,7 +82,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

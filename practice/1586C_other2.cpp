@@ -59,12 +59,35 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n,m;
+vector<string> in;
 void take(){
+        cin>>n>>m;
+        in.resize(n);
+        cinarr(in);
 }
-
 void solve(){
         take();
+        vector<int> pm(m+1,0);
+        for(int i =1 ; i < m; i++){
+                for(int j =1; j < n; j++){
+                        if((in[j-1][i] == 'X') and (in[j][i-1] == 'X')) pm[i+1]++;
+                }
+        }
+//        debug(pm);
+        /**
+        why?
+        **/
+        for(int i = 1; i <= m; i++) pm[i] += pm[i-1];
+        int q;
+        cin>>q;
+        while(q--){
+                int l,r;
+                cin>>l>>r;
+                int ans = pm[r]-  pm[l];
+                if(ans==0) cout<<"YES\n";
+                else cout<<"NO\n";
+        }
 }
 
 
@@ -73,7 +96,7 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
+	//cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

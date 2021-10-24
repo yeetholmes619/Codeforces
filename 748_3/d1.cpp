@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -59,12 +57,43 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+long long gcd(long long a, long long b){
+        if(!b) return a;
+        while(1){
+                long long temp = b;
+                b = a%b;
+                a = temp;
+                if(b == 0) break;
+        }
+        return a;
+}
+int n;
+vector<int> v;
 void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        sort(allvec(v));
+        int ans = -1;
+        int start = v[0];
+        for(;start > v[0] - 500; start--){
+                vector<int> fin;
+                for(int i = 0; i < n; i++){
+                        if(v[i]-start != 0) fin.pb(v[i]-start);
+                }
+                if(fin.size() == 0){
+                        cout<<-1<<"\n";
+                        return;
+                }
+                int g = fin[0];
+                for(auto t: fin) g = gcd(t,g);
+                ans = max(ans,g);
+        }
+        cout<<ans<<"\n";
 }
 
 
@@ -78,5 +107,5 @@ int32_t main() {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}
-    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
+    cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
 }

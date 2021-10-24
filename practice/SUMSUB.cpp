@@ -59,12 +59,72 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
-void take(){
+const int m = 1000000007;
+int n;
+vector<int> v;
+void nge(vector<int>& ng, vector<int>& vv){
+        ng.resize(n,0);
+        stack<int> s;
+        for(int i = n-1; i > -1; i--){
+                while(!s.empty() and vv[s.top()] <= vv[i]) s.pop();
+                if(s.empty()){
+                        ng[i] = -1;
+                        s.push(i);
+                }
+                else{
+                        ng[i] = s.top();
+                        s.push(i);
+                }
+        }
 }
 
+void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
+}
 void solve(){
         take();
+        vector<int> ng;
+        nge(ng,v);
+//        _print(v);
+//        _print(ng);
+        vector<int> dp(n,0);
+        //dp[i] = j = i∑ N (maxi,j); 
+        for(int i = n-1; i > -1; i--){
+                if(ng[i] == -1){
+                        //ai*∑j=i,N = ai*(N(N+1)/2 - i*(i+1)/2)
+                        //dp[i] = v[i]*((n)*(n-i)-(((n*(n-1))/2) - ((i-1)*i)/2));
+                        int a  = (((n%m)*((n-i)%m))%m - ((n*(n-1)/2)%m - ((i-1)*i/2)%m + m+m+m)%m + m)%m;
+                        a *= v[i]%m;
+                        a %= m;
+                        a += m;
+                        a %= m;
+                        dp[i] = a;
+                        dp[i] %= m;
+                }
+                else{
+                        dp[i] = dp[ng[i]] + v[i]*((n)*(ng[i]-i) - ((ng[i]*(ng[i]-1))/2) + ((i-1)*i)/2);
+                        int a = dp[ng[i]]%m;
+                        int b = n*(ng[i]-i);
+                        b %= m;
+                        b += (((i-1)*i)/2)%m;
+                        b %= m;
+                        b += (m - (((ng[i]-1)*ng[i])/2)%m);
+                        b %= m;
+                        b *= v[i];
+                        b %= m;
+                        dp[i] = a+ b;
+                        dp[i] %= m;
+                }
+        }
+        //debug(dp);
+        int ans = 0;
+        for(int i = 0; i < n; i++) {
+                ans += dp[i];
+                ans %= m;
+        }
+        cout<<ans<<"\n";
 }
 
 

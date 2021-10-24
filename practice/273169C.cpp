@@ -1,8 +1,6 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define curtime             chrono::high_resolution_clock::now()
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
@@ -46,24 +44,22 @@ void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
-}
+struct node{
+        int value;
+        int cnt;
+        node(){
+                value = 0;
+                cnt = 1;
+        }
+};
 void xr(int a, int b, int&c){
         c = a^b;
 }
-void mini(int a, int b, int&c){
-        c = min(a,b);
+void mini(node a, node b, node&c){
+        c.value = min(a.value,b.value);
+        c.cnt = 0;
+        if(c.value == a.value) c.cnt += a.cnt;
+        if(c.value == b.value) c.cnt += b.cnt;
 }
 void combine(int a, int b, int &c){
 	c = a+b;
@@ -134,10 +130,36 @@ class segtree{
             if(size != 1) fix((size-2+pos)/2);
     }
 };
+int n,m;
+vector<node> a;
 void take(){
+        cin>>n>>m;
+        a.resize(n);
+        for(int i =0 ; i < n; i++) cin>>a[i].value;
 }
 void solve(){
         take();
+        node neutral;
+        neutral.value = 1e10;
+        segtree<node> st(a,neutral,&mini);
+        while(m--){
+                int choice;
+                cin>>choice;
+                if(choice == 1){
+                        int ind,val;
+                        cin>>ind>>val;
+                        node up;
+                        up.value = val;
+                        st.update(ind,up);
+                 }
+                 else{
+                        int l,r;
+                        cin>>l>>r;
+                        r--;
+                        node ans = st.query(l,r);
+                        cout<<ans.value<<" "<<ans.cnt<<"\n";
+                 }
+        }
 }
 
 

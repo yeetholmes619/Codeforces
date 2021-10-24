@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -59,12 +57,69 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+class ugraph{
+        public:
+                map<int,bool> vis;
+                map<int,vector<int>> adj;
+                map<int,int> ord;
+                void addEdge(int a, int b){
+                        adj[a].pb(b);
+                        adj[b].pb(a);
+                        ord[a]++;
+                        ord[b]++;
+                }
+};
+int n,k;
 void take(){
+        cin>>n>>k;
 }
 
 void solve(){
         take();
+        ugraph g;
+        for(int i = 0; i < n-1; i++){
+                int a,b;
+                cin>>a>>b;
+                g.addEdge(a,b);
+        }
+        queue<int> q;
+        for(int i = 1; i <= n; i++){
+                if(g.ord[i] <= 1){
+                        q.push(i);
+                }
+        }
+        vector<int> poss;
+        set<int> persp;
+        int ans = 0;
+        while(q.size()){
+                ans++;
+                int node = q.front();
+                q.pop();
+                g.vis[node] = true;
+                for(auto nbr: g.adj[node]){
+                        if(g.vis[nbr] == false){
+                                g.ord[nbr]--;
+                                persp.insert(nbr);
+                        }
+                }
+                if(q.size() == 0){
+                   //     error(ans);
+                        poss.pb(ans);
+                        ans = 0;
+                        for(auto tt: persp){
+                                if((g.ord[tt] <= 1) and (g.vis[tt] == false)){
+                                        q.push(tt);
+                                }
+                        }
+                        persp.clear();
+                }
+        }
+        int fin = n;
+//        debug(poss);
+        for(int i  =0; i <= min((int)(poss.size()-1),k-1); i++){
+                fin -= poss[i];
+        }
+        cout<<fin<<"\n";
 }
 
 

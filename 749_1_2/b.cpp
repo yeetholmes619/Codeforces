@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -59,12 +57,32 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n, m;
 void take(){
+        cin>>n>>m;
 }
 
 void solve(){
         take();
+        map<int,int> q;
+        for(int i = 0; i < m ; i++){
+                int a,b,c;
+                cin>>a>>b>>c;
+                q[b]++;
+        }
+        int cc = -1;
+        for(int i =1 ; i <= n; i++){
+                if(q[i] == 0){
+                        cc = i;
+                        break;
+                }
+        }
+        int k = 1;
+        for(int i = 0; i < n-1; i++){
+                if(k == cc) k++;
+                cout<<cc<<" "<<k<<"\n";
+                k++;
+        }
 }
 
 

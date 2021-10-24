@@ -1,8 +1,6 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define curtime             chrono::high_resolution_clock::now()
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
@@ -45,19 +43,6 @@ template<class T>
 void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
-}
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
 }
 void xr(int a, int b, int&c){
         c = a^b;
@@ -121,7 +106,7 @@ class segtree{
 		size = n;
 		neutral = neu;
 		merge = fun;
-		while(__builtin_popcount(n) != 1){
+		while(__builtin_popcount(size) != 1){
 			size++;
 		}
 		tree.resize(2*size - 1,neutral);
@@ -134,10 +119,24 @@ class segtree{
             if(size != 1) fix((size-2+pos)/2);
     }
 };
+int n;
+vector<int> v;
 void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
 }
 void solve(){
         take();
+        vector<int> tt(n,0);
+        segtree<int> st(n,0);
+        vector<int> answer;
+        for(int i =0; i < n; i++){
+                if(v[i] != n) answer.pb(st.query(v[i],n-1));
+                else answer.pb(0);
+                st.update(v[i]-1,1);
+        }
+        for(auto t: answer) cout<<t<<" ";
 }
 
 

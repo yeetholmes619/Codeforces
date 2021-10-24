@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -59,12 +57,50 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+vector<bool> p;
+vector<bool> sieve(long long n){
+        vector<bool> prime(n+1,true);
+        prime[0] = prime[1] = false;
+        for(long long i = 2; i*i <= n; i++){
+                if(prime[i]){
+                        for(long long j = i*i; j <=n ; j += i){
+                                prime[j] = false;
+                        }
+                }
+        }
+        return prime;
+}
+int n;
+vector<int> v;
 void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        int s = 0;
+        for(auto t: v) s += t;
+        if(!p[s]){
+                cout<<n<<"\n";
+                for(int i = 1; i <= n; i++) cout<<i<<" ";
+                cout<<"\n";
+                return;
+        }
+        int ig = -1;
+        for(int i = 0; i < n; i++){
+                if(!p[s-v[i]]){
+                        ig = i;
+                        break;
+                }
+        }
+        cout<<n-1<<"\n";
+        for(int i  =0; i < n; i++){
+                if(i != ig) cout<<i+1<<" ";
+        }
+        cout<<"\n";
+
 }
 
 
@@ -74,6 +110,7 @@ int32_t main() {
     auto time0 = curtime;
 	ll t = 1;
 	cin >> t;
+    p = sieve(500000);
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

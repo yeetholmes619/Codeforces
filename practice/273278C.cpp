@@ -1,8 +1,6 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define curtime             chrono::high_resolution_clock::now()
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
@@ -46,24 +44,11 @@ void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
-}
 void xr(int a, int b, int&c){
         c = a^b;
 }
-void mini(int a, int b, int&c){
-        c = min(a,b);
+void max(int a, int b, int&c){
+        c = max(a,b);
 }
 void combine(int a, int b, int &c){
 	c = a+b;
@@ -104,8 +89,16 @@ class segtree{
             if(node == 0) return;
             fix((node - 1)/2);
     }
-
+    int order(int val, int node){
+            if(tree[node] < val) return -1;
+            if(node >= size -1) return node - size + 1;
+            if(tree[node*2+1] < val) return order(val,node*2+2);
+            else return order(val,node*2+1);
+    }
 	public:
+    int order(int val){
+            return order(val,0);
+    }
 	segtree(vector<T> in ,T neu,void (*fun)(T,T,T&) = &combine){
 		size = in.size();
 		neutral = neu;
@@ -134,10 +127,31 @@ class segtree{
             if(size != 1) fix((size-2+pos)/2);
     }
 };
+int n,m;
+vector<int> v;
 void take(){
+        cin>>n>>m;
+        v.resize(n);
+        cinarr(v);
 }
 void solve(){
         take();
+        segtree<int> st(v,0,&max);
+        
+        while(m--){
+                int choice;
+                cin>>choice;
+                if(choice == 1){
+                        int index, val;
+                        cin>>index>>val;
+                        st.update(index,val);
+                }
+                else{
+                        int k;
+                        cin>>k;
+                        cout<<st.order(k)<<"\n";
+                }
+        }
 }
 
 

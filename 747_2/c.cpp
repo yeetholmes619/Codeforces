@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -41,30 +39,63 @@ using namespace std;
 //you would do it in code, go step by step, in each step try to be concious of what you want to do
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
-template<class T>
-void debug(vector<T> v){
+vector<bool> isp;
+vector<bool> sieve(long long n){
+        vector<bool> prime(n+1,true);
+        prime[0] = prime[1] = false;
+        for(long long i = 2; i*i <= n; i++){
+                if(prime[i]){
+                        for(long long j = i*i; j <=n ; j += i){
+                                prime[j] = false;
+                        }
+                }
+        }
+        return prime;
+}
+void debug(vector<int> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
-}
-
+string s;
+char c;
+int n;
 void take(){
+        cin>>n>>c;
+        cin>>s;
 }
 
 void solve(){
         take();
+        bool isequal = true;
+        for(int i =  n-1; i > -1; i--){
+                if(s[i] != c){
+                        isequal = false;
+                        break;
+                }
+        }
+        if(isequal){
+                cout<<0<<"\n";
+                return;
+        }
+        int tt = -1;
+        for(int i = n-1; i > -1; i--){
+                if(s[i] == c){
+                        tt = i;
+                         break;
+                }
+        }
+        if(tt == -1){
+                cout<<2<<"\n";
+                cout<<n-1<<" "<<n<<"\n";
+                return;
+        }
+        if((tt+1)*2 > n){
+                cout<<1<<"\n";
+                cout<<tt+1<<"\n";
+                return;
+        }
+        cout<<2<<"\n";
+        cout<<n<<" "<<n-1<<"\n";
 }
 
 

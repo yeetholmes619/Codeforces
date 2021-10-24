@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -59,12 +57,20 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int a, b,c;
 void take(){
+        cin>>a>>b>>c;
 }
 
 void solve(){
         take();
+        if(a > max(b,c)) cout<<0<<" ";
+        else cout<<max(b,c) - a + 1<<" "; 
+        if(b > max(a,c)) cout<<0<<" ";
+        else cout<<max(a,c) - b + 1<<" "; 
+        if(c > max(b,a)) cout<<0<<" ";
+        else cout<<max(b,a) - c + 1<<" "; 
+        cout<<"\n";
 }
 
 

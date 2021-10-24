@@ -2,8 +2,6 @@
 
 #include<bits/stdc++.h>
 #define curtime             chrono::high_resolution_clock::now()
-#pragma GCC optimize("Ofast")
-#pragma GCC target("avx,avx2,fma")
 #define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
@@ -59,12 +57,67 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
+void printDivisors(int n,set<int> &ans)
+{
+    // Note that this loop runs till square root
+    for (int i=1; i<=sqrt(n); i++)
+    {
+        if (n%i == 0)
+        {
+            // If divisors are equal, print only one
+            if (n/i == i)
+                    ans.insert(i);
+ 
+            else{
+                    ans.insert(i);
+                    ans.insert(n/i);
+            }
+        }
+    }
+}
+int n;
+vector<int> v;
 
 void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        vector<int> diff;
+        set<int> num;
+        for(auto t: v) num.insert(t);
+        int dick = -1;
+        for(auto t: num){
+                int cc = count(allvec(v),t);
+                dick= max(dick,cc);
+        }
+        if(dick >= n/2){
+                cout<<-1<<"\n";
+                return;
+        }
+        for(int i = 0; i < n; i++){
+                for(int j = i+1; j < n; j++){
+                        if(v[i] != v[j])diff.pb(abs(v[i] - v[j]));
+                }
+        }
+        set<int> k;
+        for(auto t: diff){
+                printDivisors(t,k);
+        }
+        k.insert(1);
+        int ans = -1;
+        for(auto cd: k){
+                int cnt = 0;
+                map<int,int> gg;
+                for(int i = 0; i < n; i++){
+                        gg[((v[i]%cd)+cd)%cd]++;
+                        if(gg[((v[i]%cd)+cd)%cd] >= n/2) ans = max(ans,cd);
+                }
+        }
+        cout<<ans<<"\n";
 }
 
 

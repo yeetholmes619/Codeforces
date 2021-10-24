@@ -1,6 +1,10 @@
 //Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
 
 #include<bits/stdc++.h>
+#define curtime             chrono::high_resolution_clock::now()
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
 #define RESET   "\033[0m"
 #define BR   "\033[1m\033[31m"      /* Bold Red */
@@ -9,22 +13,14 @@ using namespace std;
 #define ll long long
 #define ld long double
 #define INF 1000000007
-#define fu(i,a,b) for(ll i = a; i<=b;i++)
-#define fd(i,a,b) for(ll i = a; i>=b; i--)
-#define fdd(i,a) for(ll i = a; i>=1; i--)
-#define fuu(i,a)for(ll i = 1; i<=a; i++)
 #define pb push_back
 #define pf push_front
 #define cinarr(a) for(auto &zz:a)cin>>zz
 #define mp make_pair
 #define allvec(v) v.begin(), v.end()
-#define vstr vector<string>
-#define vll vector<ll>
-#define vint vector<int>
 /**
  * I/O
  **/
-using namespace std;
 #define int long long
 #define output(value) cout << value << endl
 #define error(errorString) cout << BR << errorString << RESET<< "\n"
@@ -45,9 +41,23 @@ using namespace std;
 //you would do it in code, go step by step, in each step try to be concious of what you want to do
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
-void debug(vector<int> v){
-        for(auto t: v) error(t<<" ");
+template<class T>
+void debug(vector<T> v){
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
+}
+template <class T>
+void _print(vector<T> v){
+        for(auto t: v) cout<<t<<" ";
+        cout<<"\n";
+}
+template <class T>
+void _print(T k){
+        cout<<k<<"\n";
+}
+template <class T>
+void _print2(vector<T> v){
+        for(auto t: v) _print(t);
 }
 
 void take(){
@@ -61,10 +71,12 @@ void solve(){
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    auto time0 = curtime;
 	ll t = 1;
 	cin >> t;
-	fuu(i, t) {
+	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}
+    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
 }

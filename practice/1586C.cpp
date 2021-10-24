@@ -66,7 +66,7 @@ void mini(int a, int b, int&c){
         c = min(a,b);
 }
 void combine(int a, int b, int &c){
-	c = a+b;
+	c = max(a,b);
 }
 int mid(int a, int b){
 	return a + (b-a)/2;
@@ -116,6 +116,8 @@ class segtree{
 		}
 		tree.resize(2*size - 1,neutral);
 		build(in);
+//        cerr<<"\n";
+//        debug(tree);
 	}
 	segtree(int n, T neu, void (*fun)(T, T, T&)  = &combine){
 		size = n;
@@ -134,10 +136,55 @@ class segtree{
             if(size != 1) fix((size-2+pos)/2);
     }
 };
+int n,m;
+vector<string> in;
 void take(){
+        cin>>n>>m;
+        in.resize(n);
+        cinarr(in);
 }
 void solve(){
         take();
+        int dp[n][m];
+        for(int i = 0; i < m ; i++) dp[0][i] = 1;
+        for(int i = 0; i < n; i++) dp[i][0] = 1;
+        for(int i = 1; i < n; i++){
+                for(int j = 1; j < m; j++){
+                        if((in[i-1][j] == '.') and (in[i][j-1] == '.')){
+                                dp[i][j] = min(dp[i-1][j],dp[i][j-1]);
+                        }
+                        else if(in[i-1][j] == '.') dp[i][j] = dp[i-1][j];
+                        else if(in[i][j-1] == '.') dp[i][j] = dp[i-1][j];
+                        else dp[i][j] = j+1;
+                }
+        }
+//        for(int i =0 ; i < n; i++){
+//                for(int j = 0; j < m; j++){
+//                        cerr<<BR<<dp[i][j]<<" "<<RESET;
+//                }
+//                cerr<<"\n";
+//        }
+        vector<int> s(m,0);
+        for(int i = 0; i < m; i++){
+                for(int j = 0; j < n; j++){
+                        s[i] = max(s[i],dp[j][i]);
+                }
+        }
+//        cerr<<"\n";
+//        debug(s);
+        segtree<int> st(s,0);
+        int q;
+        cin>>q;
+        while(q--){
+                int l,r;
+                cin>>l>>r;
+                int ans = st.query(l-1,r-1);
+//                cerr<<ans<<"\n";
+                if(ans > l){
+                        cout<<"NO\n";
+                }
+                else cout<<"YES\n";
+        }
 }
 
 
@@ -146,7 +193,7 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	//cin >> t;
+//	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
