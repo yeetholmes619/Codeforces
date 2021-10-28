@@ -59,21 +59,24 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,k;
+int n;
+vector<int> h;
 void take(){
-        cin>>n>>k;
+        cin>>n;
+        h.resize(n);
+        cinarr(h);
 }
 
 void solve(){
         take();
-        vector<int> ans;
-        int it = 1;
-        for(int i =0 ; i < 32; i++){
-                if(n&it) ans.pb(i);
-                it *= 2;
+        vector<int> dp(n,INT_MAX);
+        dp[0] = 0;
+        for(int i = 0; i < n-2; i++){
+                dp[i+1] = min(dp[i+1],dp[i] + abs(h[i+1] - h[i]));
+                dp[i+2] = min(dp[i+2],dp[i] + abs(h[i+2] - h[i]));
         }
-        cout<<ans.size()<<"\n";
-        for(auto t: ans) cout<<t+k+1<<" ";
+        dp[n-1] = min(dp[n-1],dp[n-2] + abs(h[n-1] - h[n-2]));
+        cout<<dp[n-1];
 }
 
 
