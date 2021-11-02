@@ -59,12 +59,25 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n;
+vector<int> v;
 void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        vector<int> l = v;
+        sort(allvec(l));
+        for(int i  =0; i < n; i++){
+                if(__builtin_popcountll(v[i]) != __builtin_popcountll(l[i])){
+                        cout<<"NO\n";
+                        return;
+                }
+        }
+        cout<<"YES\n";
 }
 
 

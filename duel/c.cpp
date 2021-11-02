@@ -59,17 +59,44 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int a,b,c;
+int n,m;
+vector<string> v;
+int cnt(int x, int y){
+        int ans = 0;
+        for(int i = x; i < n ;i++){
+                int space = i-x;
+                if((y-space < 0) or (y+space >= m)) return ans;
+//                cerr<<x<<" "<<y<<" "<<x<<"\n";
+                for(int j = y-space; j <= y+space; j++){
+  //                      cerr<<i<<" "<<j<<" "<<v[i][j]<<"\n"; 
+//                        cerr<<v[i][j]<<" ";
+                        if(v[i][j] != '*') return ans;
+                }
+  //              cerr<<"\n";
+                ans++;
+        }
+        return ans;
+}
 void take(){
-        cin>>a>>b>>c;
+        cin>>n>>m;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
-        if((max(a,b)) <= (c+1)*min(a,b)){
-                cout<<"YES\n";
+//        debug(v);
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+                for(int j = 0;j < m; j++){
+                        if(v[i][j] == '*'){
+                                int boob = cnt(i,j);
+                                ans += boob;
+    //                            cerr<<i<<" "<<j<<" "<<boob<<"\n";
+                        }
+                }
         }
-        else cout<<"NO\n";
+        cout<<ans<<"\n";
 }
 
 

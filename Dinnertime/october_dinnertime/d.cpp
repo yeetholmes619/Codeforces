@@ -59,12 +59,62 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n,m;
+map<int,vector<int>> edge;
+map<int,int> degree;
 void take(){
+        cin>>n>>m;
 }
-
+bool cmp(int a, int b){
+        return degree[a] <= degree[b];
+}
 void solve(){
         take();
+        int ans = 2*n;
+        set<int> s;
+        for(int i  =0 ;i < m; i++){
+                int a,b;
+                cin>>a>>b;
+                b += n;
+                s.insert(a);
+                s.insert(b);
+                edge[a].pb(b);
+                edge[b].pb(a);
+                degree[a]++;
+                degree[b]++;
+        }
+        ans -= s.size();
+        vector<int> v;
+        if(s.size() != 0)
+        for(auto t: s){
+                v.pb(t);
+        }
+        while(true){
+                if(v.size() == 0){
+                        cout<<ans<<"\n";
+                        return;
+                }
+                int m = -1, no = -1*(1e18),ind = -1;
+                int cnt = 0;
+                for(auto t: v){
+                        if(degree[t] > no){
+                                m = t;
+                                no = degree[t];
+                                ind = cnt;
+                        }
+                        cnt++;
+                }
+                if(degree[m] <= 0){
+                        ans += v.size();
+                        cout<<ans<<"\n";
+                        return;
+                }
+                for(auto t: edge[m]) degree[t]--;
+                int c= v.back();
+                v[v.size()-1] = m;
+                v[ind] = c;
+                v.pop_back();
+        }
 }
 
 
@@ -73,7 +123,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

@@ -59,12 +59,42 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+double power_mod(double a, long long b){
+        if(b == 0) return 1.0;
+        if(b == 1) return a;
+        double ans = 1.0;
+        while(b > 0){
+                if(b%2 == 1) ans = (ans*a);
+                a = (a*a);
+                b /=2;
+        }
+        return ans;
+}
+int n;
+vector<int> v;
 void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        sort(allvec(v),greater<int>());
+        int mul = v[0];
+        double ans =0;
+        if(v[0] == 0){
+                cout<<0;
+                return;
+        }
+        ans++;
+        for(int i =1; i < n; i++){
+                ans += power_mod((1.0*v[i])/v[0],n);
+        }
+        ans = pow(ans,1.0/n);
+        ans *= mul;
+        cout<<ans;
+
 }
 
 
@@ -72,11 +102,13 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     auto time0 = curtime;
+    cout<<fixed<<setprecision(5);
 	ll t = 1;
-	cin >> t;
+    cin>>t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
+        cout<<"\n";
 	}
     //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
 }

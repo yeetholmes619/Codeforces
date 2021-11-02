@@ -104,6 +104,18 @@ long long power_mod(long long a, long long b,long long m){
         }
         return ans;
 }
+
+long long power_mod(long long a, long long b){
+        if(b == 0) return 1LL;
+        if(b == 1) return a;
+        long long ans = 1;
+        while(b > 0){
+                if(b%2 == 1) ans = (ans*a);
+                a = (a*a);
+                b /=2;
+        }
+        return ans;
+}
 ll modInverse(ll a, ll m){
     for (ll x = 1; x < m; x++)
         if (((a%m) * (x%m)) % m == 1)

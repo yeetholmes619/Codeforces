@@ -53,23 +53,78 @@ void _print(vector<T> v){
 }
 template <class T>
 void _print(T k){
-        cout<<k<<"\n";
+        cerr<<k<<"\n";
 }
 template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int a,b,c;
+int n,m;
+vector<string> v;
 void take(){
-        cin>>a>>b>>c;
+        cin>>n>>m;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
-        if((max(a,b)) <= (c+1)*min(a,b)){
-                cout<<"YES\n";
+        vector<vector<int>> dp(n,vector<int>(m,0));
+        vector<vector<int>> left(n,vector<int>(m,-1));
+        vector<vector<int>> right(n,vector<int>(m,-1));
+        int fill;
+        for(int i = 0; i < n; i++){
+                fill = -1;
+                for(int j = 0; j < m; j++){
+                        if(fill == -1 and v[i][j] == '*'){
+                                left[i][j] = j;
+                                fill = j;
+                        }
+                        else if(v[i][j] == '*') left[i][j] = fill;
+                        else fill = -1;
+                }
         }
-        else cout<<"NO\n";
+
+        for(int i = 0; i < n; i++){
+                fill = -1;
+                for(int j = m; j > -1; j--){
+                        if(fill == -1 and v[i][j] == '*'){
+                                right[i][j] = j;
+                                fill = j;
+                        }
+                        else if(v[i][j] == '*') right[i][j] = fill;
+                        else fill = -1;
+                }
+        }
+        for(int i  =0; i < n; i++){
+                for(int j = 0; j < m; j++){
+                        if(v[i][j] == '*'){
+                                dp[i][j] = min(j - left[i][j],right[i][j] - j);
+                        }
+                }
+        }
+//        cerr<<dp<<"\n";
+    //    _print2(dp);
+  //      cerr<<left<<"\n";
+  //      _print2(dp);
+    //    cerr<<right<<"\n";
+//        _print2(dp);
+        int ans = 0;
+        for(int i  =0 ;i  < n; i++){
+                for(int j = 0; j < m; j++){
+                        if(v[i][j] == '*'){
+                                int temp = 1;
+                                for(int x = 1; x+i < n; x++){
+                                        if(dp[x+i][j] >= x) temp++;
+                                        else break;
+                                }
+                                ans += temp;
+//                                cerr<<i<<" "<<j<<" "<<temp<<"\n";
+                        }
+                }
+        }
+        cout<<ans<<"\n";
+
 }
 
 

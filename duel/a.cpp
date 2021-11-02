@@ -59,17 +59,17 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int a,b,c;
+int n;
+string s;
 void take(){
-        cin>>a>>b>>c;
+        cin>>n;
+        cin>>s;
 }
 
 void solve(){
         take();
-        if((max(a,b)) <= (c+1)*min(a,b)){
-                cout<<"YES\n";
-        }
-        else cout<<"NO\n";
+        sort(allvec(s));
+        cout<<s<<"\n";
 }
 
 
