@@ -59,44 +59,50 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,m;
-vector<string> v;
-int cnt(int x, int y){
-        int ans = 0;
-        for(int i = x; i < n ;i++){
-                int space = i-x;
-                if((y-space < 0) or (y+space >= m)) return ans;
-//                cerr<<x<<" "<<y<<" "<<x<<"\n";
-                for(int j = y-space; j <= y+space; j++){
-  //                      cerr<<i<<" "<<j<<" "<<v[i][j]<<"\n"; 
-//                        cerr<<v[i][j]<<" ";
-                        if(v[i][j] != '*') return ans;
-                }
-  //              cerr<<"\n";
-                ans++;
-        }
-        return ans;
-}
+int n;
+vector<int> v;
 void take(){
-        cin>>n>>m;
+        cin>>n;
         v.resize(n);
         cinarr(v);
 }
 
 void solve(){
         take();
-//        debug(v);
-        int ans = 0;
-        for(int i = 0; i < n; i++){
-                for(int j = 0;j < m; j++){
-                        if(v[i][j] == '*'){
-                                int boob = cnt(i,j);
-                                ans += boob;
-    //                            cerr<<i<<" "<<j<<" "<<boob<<"\n";
-                        }
+        map<int,int> m;
+        for(auto t: v) m[t]++;
+        vector<int> c;
+        sort(allvec(v));
+        for(auto t: v){
+                if(m[t] >= 4){
+                        cout<<t<<" "<<t<<" "<<t<<" "<<t<<"\n";
+                        return;
+                }
+                if(m[t] >= 2){
+                        if(c.size() == 0) c.pb(t);
+                        else if(c.back() != t)c.pb(t);
                 }
         }
-        cout<<ans<<"\n";
+        sort(allvec(c));
+        long double sm = INT_MAX;
+        int l = -1;
+        int b = -1;
+        for(int i = 1; i < c.size(); i++){
+                if(1.0*c[i]/c[i-1] < sm){
+                        l = c[i];
+                        b = c[i-1];
+                        sm = 1.0*c[i]/c[i-1];
+                }
+                else if(abs(1.0*c[i]/c[i-1] - sm)<= 1.0/100000){
+                        if((l*b)*(c[i]*c[i] + c[i-1]*c[i-1]) < (c[i]*c[i-1])*(l*l + b*b)){
+                                l = c[i];
+                                b = c[i-1];
+                                sm = 1.0*c[i]/c[i-1];
+                        }
+                }
+
+        }
+        cout<<l<<" "<<b<<" "<<b<<" "<<l<<"\n";
 }
 
 

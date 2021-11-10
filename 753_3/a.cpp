@@ -59,12 +59,24 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+string k;
+string s;
 void take(){
+        cin>>k;
+        cin>>s;
 }
 
 void solve(){
         take();
+        map<char,int> m;
+        for(int i = 0; i < k.size(); i++){
+                m[k[i]] = i;
+        }
+        int ans =0;
+        for(int i = 1; i < s.size(); i++){
+                ans += abs(m[s[i]] - m[s[i-1]]);
+        }
+        cout<<ans<<"\n";
 }
 
 

@@ -59,17 +59,12 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n;
-string s;
+
 void take(){
-        cin>>n;
-        cin>>s;
 }
 
 void solve(){
         take();
-        sort(allvec(s));
-        cout<<s<<"\n";
 }
 
 

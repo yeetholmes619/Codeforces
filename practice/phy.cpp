@@ -59,21 +59,15 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n;
-vector<int> v;
+double Old;
+double New;
 void take(){
-        cin>>n;
-        v.resize(n);
-        cinarr(v);
+        cin>>Old>>New;
 }
 
 void solve(){
         take();
-        int ans = v[0]*v[1];
-        for(int i = 2; i < n; i++){
-                ans = max(ans,v[i]*v[i-1]);
-        }
-        cout<<ans<<"\n";
+        cout<<abs(Old-New)*980<<"\n";
 }
 
 

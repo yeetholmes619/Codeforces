@@ -59,12 +59,91 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n;
+vector<int> v;
+string s;
 void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
+        cin>>s;
 }
 
 void solve(){
         take();
+        vector<int> a;
+        vector<int> b;
+        for(int i = 0; i < n; i++){
+                if(s[i] == 'R') a.pb(v[i]);
+                else b.pb(v[i]);
+        }
+        sort(allvec(a));
+        sort(allvec(b));
+
+        //
+        if((b.size() == 0) or (a.size() == 0)){
+                if(a.size() == 0){
+                        for(int i = 0; i < n; i++){
+                                if(b[i] < i+1){
+                                        cout<<"NO\n";
+                                        return;
+                                }
+                        }
+                        cout<<"YES\n";
+                        return;
+                }
+                if(b.size() == 0){
+                        for(int i = 0; i < n; i++){
+                                if(a[i] > i+1){
+                                        cout<<"NO\n";
+                                        return;
+                                }
+                        }
+                        cout<<"YES\n";
+                        return;
+                }
+        }
+        //
+        int sa = 0;
+        int ea = a.size() - 1;
+        int sb = 0;
+        int eb = b.size()-1;
+        for(int i = n; i > 0; i--){
+               // cerr<<i<<"\n";
+               // cerr<<sa<<" "<<ea<<"\n";
+               // cerr<<sb<<" "<<eb<<"\n"; 
+               // cerr<<"\n";
+                if(ea - sa < 0){
+                        for(int j  = sb; j <= eb; j++){
+                                if(b[j] < j-sb+1){
+                                        cout<<"NO\n";
+                                        return;
+                                }
+                        }
+                        cout<<"YES\n";
+                        return;
+                }
+                ///fr/gthgt/h/h
+                if(eb - sb < 0){
+                        for(int j = sa; j <= ea; j++){
+                                if(a[j] > j-sa+1){
+                                        cout<<"NO\n";
+                                        return;
+                                }
+                        }
+                        cout<<"YES\n";
+                        return;
+                }
+                if(a[ea] == i) ea--;
+                else if(b[eb] == i) eb--;
+                else if(b[eb] > i) eb--;
+                else if(a[ea] < i) ea--;
+                else {
+                        cout<<"NO\n";
+                        return;
+                }
+        }
+        cout<<"YES\n";
 }
 
 

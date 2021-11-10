@@ -59,22 +59,21 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n;
-vector<int> v;
+int n,m,k;
 void take(){
-        cin>>n;
-        v.resize(n);
-        cinarr(v);
+        cin>>n>>m>>k;
 }
 
 void solve(){
         take();
-        sort(allvec(v));
-        int ans = v[0];
-        for(int i = 1; i < n; i++){
-                ans = max(ans,v[i] - v[i-1]);
+        if((n-1 <= m) and (m <= (n*(n-1))/2)){
+                if(n-1 <= k-2){
+                        cout<<"YES\n";
+                        return;
+                }
         }
-        cout<<ans<<"\n";
+        cout<<"NO\n";
+
 }
 
 

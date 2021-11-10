@@ -59,62 +59,28 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,k;
+int n;
+string s;
+string x;
 void take(){
-        cin>>n>>k;
+        cin>>n;
+        cin>>s;
+        cin>>x;
 }
-int findNthNum(long long  N)
-{
-// Initialize variables
-    long long  a, b, left;
-    long long  right, mid;
-    long long  t, last_num = 0;
- 
-    // Initialize the range in which
-    // the value of 'a' is present
-    left = 1, right = N;
- 
-    // Perform Binary Search
-    while (left <= right) {
- 
-        // Find the mid value
-        mid = left + (right - left) / 2;
- 
-        t = (mid * (mid + 1)) / 2;
- 
-        // Update the range using the
-        // mid value t
-        if (t < N) {
-            left = mid + 1;
-        }
-        else if (t == N) {
-            a = mid;
-            break;
-        }
-        else {
-            a = mid;
-            right = mid - 1;
-        }
-    }
- 
-    // Find b value using a and N
-    t = a - 1;
-    b = N - (t * (t + 1)) / 2 - 1;
- 
-    // Print the value 2^a + 2^b
-    return ((1LL << a) + (1LL << b));
-}
+
 void solve(){
         take();
-        string s = "";
-        //k = findNthNum(k);
-        int x = (-1+(int)sqrt(8*(k-1)))/2;
-        int posf = (x*(x+1))/2 + (k-1)%((x*(x+1))/2);
-        int pos = (x+1) + ((x*(x+1))/2 == (k-1));
-        string ans = string(n,'a');
-        ans[posf] = 'b';
-        ans[pos] = 'b';
-        cout<<ans<<"\n";
+        map<char,int> m;
+        for(auto t: s) m[t]++;
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+                if(x[i] == '0'){
+                        ans += m[s[i] == '0'? '1' : '0'];
+                        m[s[i]]--;
+                }
+        }
+        cout<<ans;
+
 }
 
 
@@ -123,7 +89,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

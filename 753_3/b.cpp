@@ -59,12 +59,27 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n,k;
 void take(){
+        cin>>n>>k;
 }
 
 void solve(){
         take();
+        int delta = 0;
+        if(k%4 == 1){
+                delta=  k;
+        }
+        if(k%4 == 2){
+                delta = -1;
+        }
+        if(k%4 == 3){
+                delta = -1 - k;
+        }
+        if(n%2 == 0){
+                cout<<n-delta<<"\n";
+        }
+        else cout<<n+delta<<"\n";
 }
 
 
