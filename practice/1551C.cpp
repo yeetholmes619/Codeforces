@@ -46,6 +46,7 @@ void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
 }
+
 template <class T>
 void _print(vector<T> v){
         for(auto t: v) cout<<t<<" ";
@@ -59,46 +60,92 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-string s1;
-string s2;
-void take(){
-        cin>>s1;
-        cin>>s2;
+struct obj{
+        string word;
+        int frequency[5];
+        int WordSize;
+        obj(){
+                word = "";
+                WordSize = 0;
+                for(int i =0 ; i < 5; i++){
+                        frequency[i] = 0;
+                }
+        }
+};
+void debug(obj v[],int sz){
+        for(int i =0 ; i < sz; i++) cerr<<BR<<v[i].word<<" "<<RESET;
+        cerr<<"\n";
 }
+void debug2(obj v[],int sz){
+        for(int i =0 ; i < sz; i++){
+                cerr<<BG<<v[i].word<<" "<<RESET;
+                for(int j = 0; j < 5; j++){
+                        cerr<<BR<<(v[i].frequency)[j]<<" "<<RESET;
+                }
+                cerr<<"\n";
+        }
+        cerr<<"\n";
+}
+const int SIZE = 200007;
+obj in[200007];
+int choice;
+bool cmp(obj one, obj two){
+        if(one.WordSize - 2*(one.frequency)[choice] > two.WordSize - 2*(two.frequency)[choice]) return true;
+        if(one.WordSize - 2*(one.frequency)[choice] < two.WordSize -2*(two.frequency)[choice]) return false;
+        return (one.frequency)[choice] < (two.frequency)[choice];
+}
+int arr[5];
+int n;
+void take(){
+        cin>>n;
+        for(int i = 0; i < 5; i++) arr[i] = 0;
+        for(int i =0 ; i < n; i++){
+                cin>>in[i].word;
+                in[i].WordSize = (in[i].word).size();
+                for(int j = 0; j < 5; j++){
+                        (in[i].frequency)[j] = 0;
 
+                }
+                for(int j = 0; j < in[i].WordSize; j++){
+                        (in[i].frequency)[(in[i].word)[j] - 'a']++;
+                }
+                for(int j = 0; j < 5; j++){
+                        arr[j] += (in[i].frequency)[j];
+                }
+        }
+}
 void solve(){
         take();
-        int p1 = s1.size()-1;
-        int p2 = s2.size()-1;
-        if(p2 > p1){
-                cout<<"NO\n";
-                return;
-        }
-        while(p2 >= 0){
-//                cerr<<"#p1 : "<<p1<<" "<<"#p2 : "<<p2<<"\n";
-                if(p1 < 0){
-                        cout<<"NO\n";
+       // debug2(in,n);
+        int ans =0 ;
+        int nc =0 ;
+    //    for(int i = 0 ;i  < 5; i++) cerr<<BG<<arr[i]<<" ";
+  //      cerr<<"\n"<<RESET;
+        for(int i = 0 ;i  < 5; i++) nc += arr[i];
+        for(int ch = 0; ch < 5; ch++){
+                int pos = 0, neg = 0;
+                pos = arr[ch];
+                neg = nc - pos;
+                if(pos > neg){
+//                        cerr<<BB<<(char)(ch+'a')<<RESET<<"\n";
+                        cout<<n<<"\n";
                         return;
                 }
-                if(s2[p2] == s1[p1]){
-                        if(p2 == 0) break;
-                        p2--;
-                        p1--;
-                        if(p1 < 0){
-                                cout<<"NO\n";
-                                return;
-                        }
-                        if(s2[p2] == s1[p1]){
-                                continue;
-                        }
-                        else {
-                                p1 -= 2;
-                                continue;
+                choice = ch;
+                sort(in, in + n, cmp);
+      //          debug(in,n);
+                for(int j = 0; j < n; j++){
+                        int temp = (in[j].frequency)[ch];
+                        pos -= temp;
+                        neg -= in[j].WordSize - temp;
+                        if(pos > neg){
+                                ans = max(ans, n-j-1);
+                                break;
                         }
                 }
-                else p1 -=2;
         }
-        cout<<"YES\n";
+        cout<<ans<<"\n";
+
 }
 
 
