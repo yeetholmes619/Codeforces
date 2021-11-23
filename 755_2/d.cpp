@@ -59,41 +59,94 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,m,k;
+bool fun(long double x)
+{
+    // Find floating point value of
+    // square root of x.
+    if (x >= 0) {
+ 
+        long long sr = sqrt(x);
+         
+        // if product of square root
+        //is equal, then
+        // return T/F
+        return (sr * sr == x);
+    }
+    // else return false if n<0
+    return false;
+}
+int n;
 void take(){
-        cin>>n>>m>>k;
+        cin>>n;
 }
 
 void solve(){
         take();
-        if((n-1 <= m) and (m <= (n*(n-1))/2)){
-                if((n > 2) and (2 <= k-2)){
-                        cout<<"YES\n";
-                        return;
+        //find the left most
+        int st = 1;
+        int nd = n;
+        int mid;
+        while(st <= nd){ 
+                error(st<<" "<<nd);
+                if(st == nd) break;
+                mid = st + (nd-st)/2;
+                cout<<"? 1 "<<mid<<endl;
+                int in;
+                cin>>in;
+                if(in == 0){
+                        st = mid+1;
+                        continue;
                 }
-                if(m == (n*(n-1))/2){
-                        if(1<=k-2){
-                                cout<<"YES\n";
-                                return;
-                        }
+                else nd = mid-1;
+        }
+        int i = mid;
+        //find right most
+        st = 1;
+        nd = n;
+        while(st <= nd){ 
+                if(st == nd) break;
+                mid = st + (nd-st)/2;
+                cout<<"? "<<mid<<" "<<n<<endl;
+                int in;
+                cin>>in;
+                if(in != 0){
+                        st = mid+1;
+                        continue;
                 }
-                if((n == 2) and (1 <= k-2)){
-                        cout<<"YES\n";
-                        return;
+                else nd = mid-1;
+        }
+        int k = mid;
+        st = 1;
+        nd = n;
+        //find j
+        while(st <= nd){ 
+                if(st == nd) break;
+                if(st+1 == nd) break;
+                mid = st + (nd-st)/2;
+                cout<<"? "<<st<<" "<<mid-1<<endl;
+                int in;
+                cin>>in;
+                cout<<"? "<<mid<<" "<<nd<<endl;
+                int in2;
+                cin>>in2;
+                if(fun(in) and fun(in2)) break;
+                if(fun(in)){
+                        st = mid+1;
+                        continue;
                 }
-                if((n == 1) and (0 <= k-2)){
-                        cout<<"YES\n";
-                        return;
+                else{
+                        nd = mid-1;
+                        continue;
                 }
         }
-        cout<<"NO\n";
+        int j = mid;
+        cout<<"! "<<i<<" "<<j<<" "<<k<<"\n";
 
+                
 }
 
 
 int32_t main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
 	cin >> t;

@@ -59,35 +59,38 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,m,k;
+int n,k;
+vector<int> v;
 void take(){
-        cin>>n>>m>>k;
+        cin>>n>>k;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
-        if((n-1 <= m) and (m <= (n*(n-1))/2)){
-                if((n > 2) and (2 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if(m == (n*(n-1))/2){
-                        if(1<=k-2){
-                                cout<<"YES\n";
-                                return;
-                        }
-                }
-                if((n == 2) and (1 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if((n == 1) and (0 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
+        if(k == 0){
+                cout<<n<<"\n";
+                return;
         }
-        cout<<"NO\n";
+        sort(allvec(v));
+        int i = 0;
+        map<int,bool> mp;
+        for(auto t:v) mp[t] = true; 
 
+        for(;i<n;i++){
+                if(v[i] != i) break;
+        }
+        int m = v[n-1];
+        if(i == n){
+                cout<<n+k<<"\n";
+                return;
+        }
+        if(mp[(i+m+1)/2]){
+                cout<<n<<"\n";
+                return;
+        }
+        else cout<<n+1<<"\n";
 }
 
 

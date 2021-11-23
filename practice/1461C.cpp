@@ -59,34 +59,54 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,m,k;
+int n,m;
+vector<int> v;
+vector<pair<int,double>> p;
 void take(){
-        cin>>n>>m>>k;
+        v.clear();
+        p.clear();
+        cin>>n>>m;
+        v.resize(n);
+        cinarr(v);
+        p.resize(m);
+        for(int i = 0; i < m; i++){
+                cin>>p[i].first>>p[i].second;
+        }
 }
 
 void solve(){
         take();
-        if((n-1 <= m) and (m <= (n*(n-1))/2)){
-                if((n > 2) and (2 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if(m == (n*(n-1))/2){
-                        if(1<=k-2){
-                                cout<<"YES\n";
-                                return;
-                        }
-                }
-                if((n == 2) and (1 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if((n == 1) and (0 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
+        double ans = 0;
+        vector<int> vv = v;
+        sort(allvec(vv));
+        if(v == vv){
+                cout<<1<<"\n";
+                return;
         }
-        cout<<"NO\n";
+        int r = n-1;
+        while(v[r] == vv[r]) r--;
+        r++;
+        vector<pair<int,double>> ppw;
+        for(auto t: p){
+                if(t.first >= r) ppw.pb(t);
+        }
+        if(ppw.size() == 0){
+                cout<<0<<"\n";
+                return;
+        }
+        vector<pair<int,double>> ppl;
+        ppl = ppw;
+        for(auto &t:ppl) t.second = 1-t.second;
+        m = ppw.size();
+        for(int i = 1; i < m; i++){
+                ppl[i].second *= ppl[i-1].second;
+        }
+        ans += ppw[0].second;
+        for(int i = 1; i < m; i++){
+                ans += ppw[i].second*ppl[i-1].second;
+        }
+        cout<<ans<<"\n";
+
 
 }
 
@@ -95,6 +115,7 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     auto time0 = curtime;
+    cout<<fixed<<setprecision(8);
 	ll t = 1;
 	cin >> t;
 	for(int i = 0 ; i < t; i++) {

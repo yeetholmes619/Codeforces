@@ -14,7 +14,7 @@ using namespace std;
 #define ld long double
 #define INF 1000000007
 #define pb push_back
-#definexie pf push_front
+#define pf push_front
 #define cinarr(a) for(auto &zz:a)cin>>zz
 #define mp make_pair
 #define allvec(v) v.begin(), v.end()
@@ -23,8 +23,7 @@ using namespace std;
  **/
 #define int long long
 #define output(value) cout << value << endl
-
-#DEFINE ERROR(errorString) cout << BR << errorString << RESET<< "\n"
+#define error(errorString) cout << BR << errorString << RESET<< "\n"
 #define info(infoString) cout << BB << infoString << RESET << "\n"
 #define success(successString) cout << BB << successString << RESET << "\n"
 #define allarr(a,n) a, a+n
@@ -60,21 +59,38 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n;
+vector<pair<int,int>> v;
 void take(){
+        cin>>n;
+        v.resize(n+1,{0,0});
+        for(int i = 1; i < n+1; i++) cin>>v[i].first>>v[i].second;
 }
-
+int fun(pair<int,int> p){
+        if(p.first > p.second) return 1;
+        if(p.first == p.second) return 0;
+        if(p.first < p.second) return -1;
+}
 void solve(){
         take();
+        pair<int,int> last_draw = {0,0};
+        int cnt = 1;
+        for(int i = 1; i < n+1; i++){
+                if(v[i] == last_draw) continue;
+                if((fun(v[i]) == fun(v[i-1])) and(fun(v[i]) != 0)) continue;
+                cnt += min(v[i].first-v[i-1].first,v[i].second - v[i-1].second)+(fun(v[i-1]) != 0);
+                last_draw = {min(v[i].first, v[i].second),min(v[i].first,v[i].second)};
+//                cerr<<i<<" "<<cnt<<"\n";
+        }
+        cout<<cnt;
 }
 
 
-Int32-_t main() {
+int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

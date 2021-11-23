@@ -59,14 +59,30 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-
+int n;
+vector<int> v1;
+vector<int> v2;
+vector<int> v;
 void take(){
+        cin>>n;
+        v.resize(2*n);
+        cinarr(v);
+//        debug(v);
 }
 
 void solve(){
         take();
+        sort(allvec(v));
+        vector<int> ans(2*n,-1);
+        for(int i =0 ; i < n; i++){
+                ans[2*i] = v[i];
+        }
+        sort(allvec(v),greater<int>());
+        for(int i =0 ; i < n; i++){
+                ans[2*i+1] = v[i];
+        }
+        _print(ans);
 }
-
 
 int32_t main() {
     ios_base::sync_with_stdio(false);

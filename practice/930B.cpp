@@ -59,34 +59,44 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,m,k;
+string s;
 void take(){
-        cin>>n>>m>>k;
+        cin>>s;
 }
 
 void solve(){
         take();
-        if((n-1 <= m) and (m <= (n*(n-1))/2)){
-                if((n > 2) and (2 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if(m == (n*(n-1))/2){
-                        if(1<=k-2){
-                                cout<<"YES\n";
-                                return;
+        int n = s.size();
+        s += s;
+        map<char,vector<int>> m;
+        for(int i = 0; i < n; i++) m[s[i]].pb(i);
+        double ans = 0;
+        map<char,double> a;
+        map<char,int> k_win;
+        set<char> ss;
+        for(auto t: s) ss.insert(t);
+        for(auto t: ss){
+                a[t] = 0;
+                set<char> tt;
+                for(int i = 1; i < n; i++){
+                        tt.clear();
+                        for(auto k: m[t]){
+                                tt.insert(s[i+k]);
+                        }
+                        if(a[t] < max(a[t],(1.0*tt.size())/m[t].size())){
+                                a[t] = max(a[t],(1.0*tt.size())/m[t].size());
+                                k_win[t] = i;
                         }
                 }
-                if((n == 2) and (1 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if((n == 1) and (0 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
         }
-        cout<<"NO\n";
+        error(n);
+        for(auto t: ss){
+                cerr<<BR<<t<<" "<<k_win[t]<<" "<<a[t]<<" "<<m[t].size()<<"\n";
+                cerr<<RESET;
+                ans += m[t].size()*a[t];
+        }
+        ans /= n;
+        cout<<ans;
 
 }
 
@@ -94,9 +104,9 @@ void solve(){
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+    cout<<fixed<<setprecision(8);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

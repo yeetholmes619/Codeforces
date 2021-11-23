@@ -43,7 +43,7 @@ using namespace std;
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 template<class T>
 void debug(vector<T> v){
-        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
+        for(auto t: v) cerr<<BR<<t.first<<" "<<t.second<<"\n"<<RESET;
         cerr<<"\n";
 }
 template <class T>
@@ -59,35 +59,50 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,m,k;
+pair<int,int> fun(vector<int> &v){
+        int st = v[0]+1;
+        int k = 0 ;
+        for(int i = 0; i < v.size(); i++){
+                if(st <= v[i]){
+                        k += v[i]+1 - st;
+                        st = v[i]+1;
+                }
+                st++;
+        }
+        return {v[0]+1+k,v.size()};
+}
+int n;
+vector<pair<int,int>> v;
 void take(){
-        cin>>n>>m>>k;
+       v.clear();
+       cin>>n;
+       for(int i = 0; i < n; i++){
+               int k;
+               cin>>k;
+               vector<int> temp;
+               temp.resize(k);
+               cinarr(temp);
+               v.pb(fun(temp)); 
+       }
 }
 
 void solve(){
         take();
-        if((n-1 <= m) and (m <= (n*(n-1))/2)){
-                if((n > 2) and (2 <= k-2)){
-                        cout<<"YES\n";
-                        return;
+        sort(allvec(v));
+//        debug(v);
+        int k = 0;
+        int st = v[0].first;
+        for(int i = 0; i < n; i++){
+                if(st >= v[i].first){
+                        st += v[i].second;
                 }
-                if(m == (n*(n-1))/2){
-                        if(1<=k-2){
-                                cout<<"YES\n";
-                                return;
-                        }
-                }
-                if((n == 2) and (1 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if((n == 1) and (0 <= k-2)){
-                        cout<<"YES\n";
-                        return;
+                else{
+                        k += v[i].first - st;
+                        st = v[i].first;
+                        st += v[i].second;
                 }
         }
-        cout<<"NO\n";
-
+        cout<<v[0].first+k<<"\n";
 }
 
 

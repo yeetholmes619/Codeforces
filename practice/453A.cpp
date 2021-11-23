@@ -59,44 +59,28 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,m,k;
+int m,n;
+//∑((P(Y=y) + P(Y<y))^n -P(Y<n)^n)*y
 void take(){
-        cin>>n>>m>>k;
+        cin>>m>>n;
 }
 
 void solve(){
         take();
-        if((n-1 <= m) and (m <= (n*(n-1))/2)){
-                if((n > 2) and (2 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if(m == (n*(n-1))/2){
-                        if(1<=k-2){
-                                cout<<"YES\n";
-                                return;
-                        }
-                }
-                if((n == 2) and (1 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
-                if((n == 1) and (0 <= k-2)){
-                        cout<<"YES\n";
-                        return;
-                }
+        double ans = 0;
+        for(int i = 1; i<= m; i++){
+                ans += (pow(1.0/m + (1.0*(i-1))/m,n) - pow((1.0*(i-1))/m,n))*i;
         }
-        cout<<"NO\n";
-
+        cout<<ans;
 }
 
 
 int32_t main() {
+    cout<<fixed<<setprecision(8);
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
