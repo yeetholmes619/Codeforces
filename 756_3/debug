@@ -1,0 +1,5 @@
+#!/bin/bash
+
+args=("$@")
+filename=${args[0]}
+g++ -std=c++17 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment $filename -o ${filename%.*}

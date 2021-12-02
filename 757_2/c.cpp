@@ -59,67 +59,45 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-bool isint(string m){
-        if(m.size() == 0) return false;
-        if(m.size() > 1 and m[0] == '0') return false;
-        for(auto t: m){
-                if(t < '0' or t > '9') return false;
+
+long long power_mod(long long a, long long b,long long m){
+        if(b == 0) return 1LL;
+        if(b == 1) return (a%m);
+        long long ans = 1;
+        while(b > 0){
+                if(b%2 == 1) ans = (ans*a)%m;
+                a = (a*a)%m;
+                b /=2;
         }
-        return true;
+        return ans;
 }
-string s;
+int xorSum(int k, int n)
+{
+    int bits = k;
+ 
+    int ans = ((bits%MOD) * (power_mod(2, n-1,MOD)%MOD))%MOD;
+ 
+    return ans;
+}
+int n,m;
+int k;
+vector<int> g;
 void take(){
-        cin>>s;
+        cin>>n>>m;
+        g.resize(m);
+        k =0 ;
+        for(int i =0 ; i < m; i++){
+                cin>>g[i];
+                cin>>g[i];
+                cin>>g[i];
+                k |= g[i];
+
+        }
 }
 
 void solve(){
         take();
-        int n;
-        n = s.size();
-        string word = "";
-        vector<string> num;
-        vector<string> el;
-        for(auto t: s){
-                if(t == ',' or t == ';'){
-                        if(isint(word)){
-                                num.pb(word);
-                        }
-                        else el.pb(word);
-                        word = "";
-                }
-                else{
-                        word += t;
-                }
-        }
-                        if(isint(word)){
-                                num.pb(word);
-                        }
-                        else el.pb(word);
-                        word = "";
-        if(!num.size()){
-                cout<<"-\n";
-        }
-        else{
-                cout<<"\"";
-                for(int i = 0; i < num.size()-1;i++){
-                        cout<<num[i]<<",";
-                }
-                cout<<num.back()<<"\"\n";
-        }
-        if(!el.size()){
-                cout<<"-\n";
-        }
-        else{
-                cout<<"\"";
-                for(int i = 0; i < el.size()-1;i++){
-                        cout<<el[i]<<",";
-                }
-                cout<<el.back()<<"\"\n";
-        }
-
-
-
-
+        cout<<xorSum(k,n)<<"\n";
 }
 
 
@@ -128,6 +106,7 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
+	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

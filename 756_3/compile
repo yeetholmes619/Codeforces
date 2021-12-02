@@ -1,0 +1,5 @@
+#!/bin/bash
+
+args=("$@")
+filename=${args[0]}
+g++ -std=c++17 $filename -o ${filename%.*}

@@ -59,29 +59,34 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int x,y;
+int n,m;
+vector<int> v;
 void take(){
-        cin>>x>>y;
+        cin>>n>>m;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
-        if(x == 1){
-                if(y == 1){
-                        cout<<"YES\n";
+        vector<int> p;
+        p = v;
+        for(int i = 1;i  < n; i++)v[i] += v[i-1];
+        for(int i = 0; i < n; i++){
+                int ss = v[i];
+                if(ss <= m){
+                        cout<<0<<" ";
+                        continue;
                 }
-                else cout<<"NO\n";
-                return;
-        }
-        if((x == 2) or (x == 3)){
-                if((y ==1) or (y == 2) or (y ==3)){
-                        cout<<"YES\n";
+                sort(p.begin(),p.begin()+i);
+                for(int j = i-1; j  >= 0; j--){
+                        if(ss - p[j] <= m){
+                                cout<<i- j<<" ";
+                                break;
+                        }
+                        else ss -= p[j];
                 }
-                else cout<<"NO\n";
-                return;
         }
-        cout<<"YES\n";
-                
 }
 
 
@@ -90,7 +95,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

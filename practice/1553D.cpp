@@ -68,36 +68,51 @@ void take(){
 
 void solve(){
         take();
-        int p1 = s1.size()-1;
-        int p2 = s2.size()-1;
-        if(p2 > p1){
+        int n1 = s1.size();
+        int n2 = s2.size();
+        int p1 = (((n1-1)%2)^((n2+1)%2));
+        int p2 = 0;
+        if(p1 >= n1){
                 cout<<"NO\n";
                 return;
         }
-        while(p2 >= 0){
-//                cerr<<"#p1 : "<<p1<<" "<<"#p2 : "<<p2<<"\n";
-                if(p1 < 0){
+        for(;p1 < n1 and s1[p1] != s2[p2]; p1+=2){
+        }
+//        cerr<<p1<<"\n";
+        if(p1 >= n1){
+                cout<<"NO\n";
+                return;
+        }
+
+        while(p2 <= n2-1){
+                if(p1 >= n1){
                         cout<<"NO\n";
                         return;
                 }
-                if(s2[p2] == s1[p1]){
-                        if(p2 == 0) break;
-                        p2--;
-                        p1--;
-                        if(p1 < 0){
+                if(s1[p1] == s2[p2]){
+                        if(p2 == n2-1){
+                                p2++;
+                                break;
+                        }
+                        if(p1 == n1-1){
                                 cout<<"NO\n";
                                 return;
                         }
-                        if(s2[p2] == s1[p1]){
+                        if(s1[p1+1] == s2[p2+1]){
+                                p2++;
+                                p1++;
                                 continue;
                         }
-                        else {
-                                p1 -= 2;
-                                continue;
+                        else{
+                                p2++;
+                                p1 += 3;
                         }
                 }
-                else p1 -=2;
+                else{
+                        p1 += 2;
+                }
         }
+
         cout<<"YES\n";
 }
 

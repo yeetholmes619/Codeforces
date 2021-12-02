@@ -59,65 +59,48 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-bool isint(string m){
-        if(m.size() == 0) return false;
-        if(m.size() > 1 and m[0] == '0') return false;
-        for(auto t: m){
-                if(t < '0' or t > '9') return false;
-        }
-        return true;
+bool cmp(pair<int,int> p, pair<int,int> q){
+        return p.first > q.first;
 }
-string s;
+int n;
+vector<pair<int,int>>v;
 void take(){
-        cin>>s;
+        cin>>n;
+        v.resize(n);
+        for(int i =0 ; i < n; i++){
+                cin>>v[i].first;
+                v[i].second = i+1;
+        }
 }
+
 
 void solve(){
         take();
-        int n;
-        n = s.size();
-        string word = "";
-        vector<string> num;
-        vector<string> el;
-        for(auto t: s){
-                if(t == ',' or t == ';'){
-                        if(isint(word)){
-                                num.pb(word);
-                        }
-                        else el.pb(word);
-                        word = "";
+        sort(allvec(v),cmp);
+        map<int,int> m;
+        m[0] = 0;
+        int ch = 1;
+        for(int i = 0; i < n; i++){
+                m[v[i].second] = ch;
+                if(ch < 0){
+                        ch *= -1;
+                        ch++;
                 }
                 else{
-                        word += t;
+                        ch *= -1;
                 }
         }
-                        if(isint(word)){
-                                num.pb(word);
-                        }
-                        else el.pb(word);
-                        word = "";
-        if(!num.size()){
-                cout<<"-\n";
+        int ans =0 ;
+        for(int i =0; i < n; i++){
+                int k = v[i].first*2*(abs(m[v[i].second]));
+                ans += k;
+                //cerr<<ans<<"\n";
         }
-        else{
-                cout<<"\"";
-                for(int i = 0; i < num.size()-1;i++){
-                        cout<<num[i]<<",";
-                }
-                cout<<num.back()<<"\"\n";
+        cout<<ans<<"\n";
+        for(int i =0 ; i <= n; i++){
+                cout<<m[i]<<" ";
         }
-        if(!el.size()){
-                cout<<"-\n";
-        }
-        else{
-                cout<<"\"";
-                for(int i = 0; i < el.size()-1;i++){
-                        cout<<el[i]<<",";
-                }
-                cout<<el.back()<<"\"\n";
-        }
-
-
+        cout<<"\n";
 
 
 }
@@ -128,6 +111,7 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
+	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
