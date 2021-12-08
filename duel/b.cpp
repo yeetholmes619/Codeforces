@@ -59,33 +59,26 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-int n,m;
+int n,x;
 vector<int> v;
 void take(){
-        cin>>n>>m;
+        cin>>n>>x;
         v.resize(n);
         cinarr(v);
 }
 
 void solve(){
         take();
-        vector<int> p;
-        p = v;
-        for(int i = 1;i  < n; i++)v[i] += v[i-1];
-        for(int i = 0; i < n; i++){
-                int ss = v[i];
-                if(ss <= m){
-                        cout<<0<<" ";
-                        continue;
-                }
-                sort(p.begin(),p.begin()+i);
-                for(int j = i-1; j  >= 0; j--){
-                        if(ss - p[j] <= m){
-                                cout<<i- j<<" ";
-                                break;
-                        }
-                        else ss -= p[j];
-                }
+        sort(allvec(v));
+        int i;
+        for(i =0 ; i < n; i++){
+                if(v[i] > x) break;
+        }
+        if(v[i-1] == x){
+                cout<<1+x-i+1<<"\n";
+        }
+        else{
+                cout<<x-i<<"\n";
         }
 }
 

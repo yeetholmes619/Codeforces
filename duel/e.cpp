@@ -15,14 +15,6 @@ using namespace std;
 #define INF 1000000007
 #define pb push_back
 #define pf push_front
-#define fu(i,n) for(int i = 0; i < n; i++)
-#define fu1(i,n) for(int i = 1; i <= n; i++)
-#define fd(i,n) for(int i = n-1; i > -1; i--)
-#define fd1(i,n) for(int i = n ; i >= 1; i--)
-#define vi vector<int>
-#define vs vector<string>
-#define pi pair<int,int>
-#define umap unordered_map
 #define cinarr(a) for(auto &zz:a)cin>>zz
 #define mp make_pair
 #define allvec(v) v.begin(), v.end()
@@ -30,7 +22,7 @@ using namespace std;
  * I/O
  **/
 #define int long long
-#define output(value) cout << value << "\n"
+#define output(value) cout << value << endl
 #define error(errorString) cout << BR << errorString << RESET<< "\n"
 #define info(infoString) cout << BB << infoString << RESET << "\n"
 #define success(successString) cout << BB << successString << RESET << "\n"
@@ -50,22 +42,6 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 template<class T>
-void take(vector<T> &v, int &n){
-        cin>>n;
-        v.resize(n);
-        cinarr(v);
-}
-template<class T>
-void take(vector<vector<T>> &v, int &n, int &m ){
-        cin>>n>>m;
-        v.resize(n,vector<T>(m));
-        for(int i =0 ;i < n; i++){
-                for(int j = 0; j < m; j++){
-                        cin>>v[i][j];
-                }
-        }
-}
-template<class T>
 void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
@@ -83,24 +59,52 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
-//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
+int n,p;
+vector<int> l;
+vector<int> r;
 void take(){
+        cin>>n>>p;
+        l.resize(n);
+        r.resize(n);
+        for(int i = 0; i < n; i++){
+                cin>>l[i]>>r[i];
+        }
 }
 
 void solve(){
         take();
+        vector<double> pp(n,0);
+        for(int i = 2; i< n-1; i++){
+                double a = r[i+1]/p - (l[i+1]+p-1)/p + 1;
+                double b = r[i]/p - (l[i]+p-1)/p + 1;
+                double c = r[i-1]/p - (l[i-1]+p-1)/p + 1;
+                pp[i] += ((b/(r[i]-l[i]+1)) * (1.0/(r[i+1]-l[i+1]+1))) + ((1.0/(r[i]-l[i]+1)) * (a/(r[i+1]-l[i+1]+1)));
+                pp[i] += ((b/(r[i]-l[i]+1)) * (1.0/(r[i-1]-l[i-1]+1))) + ((1.0/(r[i]-l[i]+1)) * (c/(r[i-1]-l[i-1]+1)));
+        }
+                double a = r[1]/p - (l[1]+p-1)/p + 1;
+                double b = r[0]/p - (l[0]+p-1)/p + 1;
+                double c = r[n-1]/p - (l[n-1]+p-1)/p + 1;
+                pp[0] += ((b/(r[0]-l[0]+1)) * (1.0/(r[1]-l[1]+1))) + ((1.0/(r[0]-l[0]+1)) * (a/(r[1]-l[1]+1)));
+                pp[0] += ((b/(r[0]-l[0]+1)) * (1.0/(r[n-1]-l[n-1]+1))) + ((1.0/(r[0]-l[0]+1)) * (c/(r[n-1]-l[n-1]+1)));
+                 a = r[n-2]/p - (l[n-2]+p-1)/p + 1;
+                 b = r[n-1]/p - (l[n-1]+p-1)/p + 1;
+                 c = r[0]/p - (l[0]+p-1)/p + 1;
+                pp[n-1] += ((b/(r[n-1]-l[n-1]+1)) * (1.0/(r[0]-l[0]+1))) + ((1.0/(r[n-1]-l[n-1]+1)) * (a/(r[0]-l[0]+1)));
+                pp[n-1] += ((b/(r[n-1]-l[n-1]+1)) * (1.0/(r[n-2]-l[n-2]+1))) + ((1.0/(r[n-1]-l[n-1]+1)) * (c/(r[n-2]-l[n-2]+1)));
+        double ans = 0;
+        for(auto t: pp) ans += 1000*t;
+        cout<<ans<<"\n";
+
 }
 
 
 int32_t main() {
+        cout<<setprecision(8)<<fixed;
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
-	for(int i = 1 ; i <= t; i++) {
+	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}

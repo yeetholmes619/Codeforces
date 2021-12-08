@@ -15,14 +15,6 @@ using namespace std;
 #define INF 1000000007
 #define pb push_back
 #define pf push_front
-#define fu(i,n) for(int i = 0; i < n; i++)
-#define fu1(i,n) for(int i = 1; i <= n; i++)
-#define fd(i,n) for(int i = n-1; i > -1; i--)
-#define fd1(i,n) for(int i = n ; i >= 1; i--)
-#define vi vector<int>
-#define vs vector<string>
-#define pi pair<int,int>
-#define umap unordered_map
 #define cinarr(a) for(auto &zz:a)cin>>zz
 #define mp make_pair
 #define allvec(v) v.begin(), v.end()
@@ -30,7 +22,7 @@ using namespace std;
  * I/O
  **/
 #define int long long
-#define output(value) cout << value << "\n"
+#define output(value) cout << value << endl
 #define error(errorString) cout << BR << errorString << RESET<< "\n"
 #define info(infoString) cout << BB << infoString << RESET << "\n"
 #define success(successString) cout << BB << successString << RESET << "\n"
@@ -50,22 +42,6 @@ using namespace std;
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
 template<class T>
-void take(vector<T> &v, int &n){
-        cin>>n;
-        v.resize(n);
-        cinarr(v);
-}
-template<class T>
-void take(vector<vector<T>> &v, int &n, int &m ){
-        cin>>n>>m;
-        v.resize(n,vector<T>(m));
-        for(int i =0 ;i < n; i++){
-                for(int j = 0; j < m; j++){
-                        cin>>v[i][j];
-                }
-        }
-}
-template<class T>
 void debug(vector<T> v){
         for(auto t: v) cerr<<BR<<t<<" "<<RESET;
         cerr<<"\n";
@@ -83,14 +59,58 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
-//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
+struct it{
+        int a,b;
+        it(){
+                a = 0;
+                b = 0;
+        }
+};
+vector<it> v;
+int n;
 void take(){
+        cin>>n;
+        v.resize(n);
+        for(int i = 0; i < n; i++){
+                cin>>v[i].a>>v[i].b;
+        }
+}
+bool cmp(it z, it k){
+        return z.b < k.b;
 }
 
 void solve(){
         take();
+        sort(allvec(v),cmp);
+        int st = 0;
+        int en = n-1;
+        int ans = 0;
+        int curr = 0;
+        while(st <= en){
+                if(curr >= v[en].b){
+                        ans += v[en].a;
+                        curr += v[en].a;
+                        en--;
+                }
+                else if(v[en].a == 0){
+                        en--;
+                }
+                else if(curr >= v[st].b){
+                        ans += v[st].a;
+                        curr += v[st].a;
+                        st++;
+                }
+                else if(v[st].a == 0){
+                        st++;
+                }
+                else{
+                        int temp =  min(v[en].b-curr,v[en].a);
+                        v[en].b -= temp;
+                        ans += temp*2;
+                        curr += temp;
+                }
+        }
+        cout<<ans;
 }
 
 
@@ -99,8 +119,7 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
-	for(int i = 1 ; i <= t; i++) {
+	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}

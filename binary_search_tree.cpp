@@ -27,9 +27,6 @@ using namespace std;
 //Check if constraints are correct
 // for single arrays declare them as long long int
 //overflow must be taken care of!! use strings when big
-//  0 < |int| < 1e9
-//  0 < |long int| < 1e12
-//  0 < |long long int| < 1e18
 //when you are working with stacks, remember to take care of stacks of 0 size
 //when you see a problem, and you know how you would tackle it in the real world, but don't know how
 //you would do it in code, go step by step, in each step try to be concious of what you want to do

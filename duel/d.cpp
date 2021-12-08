@@ -1,52 +1,133 @@
-// C++ program to find next identical year
-#include<iostream>
+//Author = Anirudh Srikanth (yeetholmes619) [B20CS006]
+
+#include<bits/stdc++.h>
+#define curtime             chrono::high_resolution_clock::now()
+#pragma GCC optimize("Ofast")
+#pragma GCC target("avx,avx2,fma")
+#define timedif(start,end)  chrono::duration_cast<chrono::nanoseconds>(end - start).count()
 using namespace std;
-
-// Function for finding extra days of year
-// more than complete weeks
-int extraDays(int y)
-{
-	// If current year is a leap year, then
-	// it number of weekdays move ahead by
-	// 2 in terms of weekdays.
-	if (y%400==0 || y%100!=0 && y%4==0)
-		return 2;
-
-	// Else number of weekdays move ahead
-	// by 1.
-	return 1;
+#define RESET   "\033[0m"
+#define BR   "\033[1m\033[31m"      /* Bold Red */
+#define BG   "\033[1m\033[32m"      /* Bold Green */
+#define BB    "\033[1m\033[34m"      /* Bold Blue */
+#define ll long long
+#define ld long double
+#define INF 1000000007
+#define pb push_back
+#define pf push_front
+#define cinarr(a) for(auto &zz:a)cin>>zz
+#define mp make_pair
+#define allvec(v) v.begin(), v.end()
+/**
+ * I/O
+ **/
+#define int long long
+#define output(value) cout << value << endl
+#define error(errorString) cout << BR << errorString << RESET<< "\n"
+#define info(infoString) cout << BB << infoString << RESET << "\n"
+#define success(successString) cout << BB << successString << RESET << "\n"
+#define allarr(a,n) a, a+n
+#define MOD 1000000007
+// precedence order :- double > float > long long int > long int > int > char
+// remember that boolean arrays and variables if uninitialized are given false
+//Check if constraints are correct
+// for single arrays declare them as long long int
+//overflow must be taken care of!! use strings when big
+//	0 < |int| < 1e9
+//	0 < |long int| < 1e12
+//	0 < |long long int| < 1e18
+//when you are working with stacks, remember to take care of stacks of 0 size
+//when you see a problem, and you know how you would tackle it in the real world, but don't know how
+//you would do it in code, go step by step, in each step try to be concious of what you want to do
+//and once you have done so, review through and remember what data structure would be perfect
+//when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
+template<class T>
+void debug(vector<T> v){
+        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
+        cerr<<"\n";
+}
+template <class T>
+void _print(vector<T> v){
+        for(auto t: v) cout<<t<<" ";
+        cout<<"\n";
+}
+template <class T>
+void _print(T k){
+        cout<<k<<"\n";
+}
+template <class T>
+void _print2(vector<T> v){
+        for(auto t: v) _print(t);
+}
+int ans[600][600];
+int n;
+vector<int> dd;
+void take(){
+        cin>>n;
+        dd.resize(n);
+        cinarr(dd);
 }
 
-// Returns next identical year.
-int nextYear(int y)
-{
-	// Find number of days moved ahead by y
-	int days = extraDays(y);
+void solve(){
+        take();
+        for(int i = 0; i < n; i++) ans[i+1][i+1] = dd[i];
+        for(int i = 1; i <= n; i++){
+                for(int j =1; j < i; j++){
+                        ans[i][j] = -1;
+                }
+        }
+        for(int i = 1; i <= n; i++){
+                int j;
+                int key = ans[i][i];
+                int occ = 1;
+                for(j = i-1; j >= 1; j--){
+                        if(occ == key) break;
+                        if(ans[i][j] == -1){ 
+                                ans[i][j] = key;
+                                occ++;
+                        }
+                        else{
+                                break;
+                        }
+                }
+                if(j == 0) j = 1;
+                if(key - occ <= n-i){
+                       for(int k = i+1; k <= i+key-occ; k++){
+                                if(ans[k][j] == -1){
+                                        ans[k][j] = key;
+                                }
+                                else{
+                                        cout<<-11<<"\n";
+                                        cout<<i<<" "<<j<<" "<<k<<" "<<key<<"\n";
+                                        return;
+                        //                break;
+                                }
+                        }
+                }
+                else{
+                        cout<<-21<<"\n";
+                                      break;
+                        //return;
+                }
+        }
+        for(int i = 1; i<= n; i++){
+                for(int j = 1; j<= i; j++){
+                        cout<<ans[i][j]<<" ";
+                }
+                cout<<"\n";
+        }
 
-	// Start from next year
-	int x = y + 1;
+}
 
-	// Count total number of weekdays
-	// moved ahead so far.
-	for (int sum=0; ; x++)
-	{
-		sum = (sum + extraDays(x)) % 7;
 
-		// If sum is divisible by 7 and leap-ness
-		// of x is same as y, return x.
-		if ( sum==0 && (extraDays(x) == days))
-			return x;
+int32_t main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    auto time0 = curtime;
+	ll t = 1;
+	for(int i = 0 ; i < t; i++) {
+		//cout << "Case #" << i << ": ";
+		solve();
 	}
-
-	return x;
+    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
 }
-
-// driver program
-int main()
-{
-        int y;
-    cin>>y;
-	cout << nextYear(y);
-	return 0;
-}
-

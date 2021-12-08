@@ -59,23 +59,35 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
+map<int,int> depth;
+void build(vector<int> v, int l, int r, int d){
+        if(l > r) return;
+        int k = -1;
+        int mx = -1;
+        for(int i = l; i <= r; i++){
+                if(mx < v[i]){
+                        mx = v[i];
+                        k = i;
+                }
+        }
+        depth[mx] = d + 1;
+        build(v,l,k-1,d+1);
+        build(v,k+1,r,d+1);
+}
 int n;
-string s;
+vector<int> v;       
 void take(){
+        depth.clear();
         cin>>n;
-        cin>>s;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
-        for(int i = 1; i < n; i++){
-                if(s[i] < s[i-1]){
-                        cout<<"YES\n";
-                        cout<<i<<" "<<i+1;
-                        return;
-                }
-        }
-        cout<<"NO";
+        build(v,0,n-1,-1);
+        for(auto t: v) cout<<depth[t]<<" ";
+        cout<<"\n";
 }
 
 
@@ -84,6 +96,7 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
+	cin >> t;
 	for(int i = 0 ; i < t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

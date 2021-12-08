@@ -59,67 +59,25 @@ template <class T>
 void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
-bool isint(string m){
-        if(m.size() == 0) return false;
-        if(m.size() > 1 and m[0] == '0') return false;
-        for(auto t: m){
-                if(t < '0' or t > '9') return false;
-        }
-        return true;
-}
-string s;
+int n;
+set<int> s;
+bool is0;
 void take(){
-        cin>>s;
+        is0 = false;
+        cin>>n;
+        for(int i =0 ;i < n; i++){
+                int k;
+                cin>>k;
+                if(k == 0) is0 = true;
+                s.insert(k);
+        }
+
+        
 }
 
 void solve(){
         take();
-        int n;
-        n = s.size();
-        string word = "";
-        vector<string> num;
-        vector<string> el;
-        for(auto t: s){
-                if(t == ',' or t == ';'){
-                        if(isint(word)){
-                                num.pb(word);
-                        }
-                        else el.pb(word);
-                        word = "";
-                }
-                else{
-                        word += t;
-                }
-        }
-                        if(isint(word)){
-                                num.pb(word);
-                        }
-                        else el.pb(word);
-                        word = "";
-        if(!num.size()){
-                cout<<"-\n";
-        }
-        else{
-                cout<<"\"";
-                for(int i = 0; i < num.size()-1;i++){
-                        cout<<num[i]<<",";
-                }
-                cout<<num.back()<<"\"\n";
-        }
-        if(!el.size()){
-                cout<<"-\n";
-        }
-        else{
-                cout<<"\"";
-                for(int i = 0; i < el.size()-1;i++){
-                        cout<<el[i]<<",";
-                }
-                cout<<el.back()<<"\"\n";
-        }
-
-
-
-
+        cout<<s.size() - is0<<"\n";
 }
 
 
