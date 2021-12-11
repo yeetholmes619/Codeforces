@@ -94,14 +94,136 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 #endif
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
-//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
+void xr(int a, int b, int&c){
+        c = a^b;
+}
+void mini(int a, int b, int&c){
+        c = min(a,b);
+}
+void combine(int a, int b, int &c){
+	c = a+b;
+}
+int mid(int a, int b){
+	return a + (b-a)/2;
+}
+template<typename T>
+class segtree{
+	private:
+	vector<T> tree;
+	T neutral;
+	void (*merge)(T, T, T&);
+	int size;
+	void build(vector<T> in){
+		for(int i = 0; i < size; i++){
+			tree[size+i-1] = in[i];
+		}
+		for(int i = size-2; i > -1; i--){
+			merge(tree[2*i+1],tree[2*i + 2], tree[i]);
+		}
+	}
 
+	T query(int node, int node_start, int node_end, int query_start, int query_end){
+        if(node_end < node_start) return neutral;
+		if((query_end< node_start) or (query_start > node_end)) return neutral;
+		if((query_start == node_start) and (query_end == node_end)) return tree[node];
+        if(((query_start == node_start) and (query_end > node_end)) or ((query_start < node_start) and (query_end == node_end))) return tree[node];
+        if((query_start <= node_start) and (query_end >= node_end)) return tree[node];
+		T answer;
+		merge(query(2*node +1, node_start, mid(node_start,node_end),query_start,query_end),query(2*node +2, mid(node_start,node_end)+1,node_end,query_start,query_end), answer);
+		return answer;
+	}
+    
+    void fix(int node){
+
+            merge(tree[node*2 + 1], tree[ node*2 + 2],tree[node]);
+            if(node == 0) return;
+            fix((node - 1)/2);
+    }
+
+	public:
+	segtree(vector<T> in ,T neu,void (*fun)(T,T,T&) = &combine){
+		size = in.size();
+		neutral = neu;
+		merge = fun;
+		while(__builtin_popcount(size) != 1){
+			size++;
+			in.pb(neutral);
+		}
+		tree.resize(2*size - 1,neutral);
+		build(in);
+	}
+	segtree(int n, T neu, void (*fun)(T, T, T&)  = &combine){
+		size = n;
+		neutral = neu;
+		merge = fun;
+		while(__builtin_popcount(n) != 1){
+			size++;
+		}
+		tree.resize(2*size - 1,neutral);
+	}
+	T query(int start, int end){
+		return query(0, 0, size-1, start, end);
+	}
+    void update(int pos, T new_val){
+            tree[size-1+pos] = new_val;
+            if(size != 1) fix((size-2+pos)/2);
+    }
+};
+//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
+int n;
+vector<pair<int,int>> a;
+vector<pair<int,int>> b;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
+        cin>>n;
+        a.resize(n);
+        b.resize(n);
+        for(int i = 0; i < n; i++){
+                cin>>a[i].first;
+                a[i].second = i;
+        }
+        for(int i = 0; i < n; i++){
+                cin>>b[i].first;
+                b[i].second = i;
+        }
 }
 
 void solve(){
         take();
+        sort(allvec(a));
+        sort(allvec(b));
+        map<int,int> m1,m2;
+        for(int i = 0; i < n; i++){
+                m1[a[i].second] = i;
+        }
+        for(int i  =0; i < n; i++){
+                m2[b[i].second] = i;
+        }
+        vector<int> one;
+        vector<int> two;
+        for(auto t: a){
+                one.pb(m2[t.second]);
+        }
+        for(auto t: a){
+                two.pb(m1[t.second]);
+        }
+        debug(one);
+        debug(two);
+        segtree<int> st1(one,10000000000,mini);
+        segtree<int> st2(two,10000000000,mini);
+        int curr1 = n-1;
+        int curr2 = st1.query(curr1,n-1);
+        for(int i =  1;  i<= n+3; i++){
+                curr1 = st2.query(curr2,n-1);
+                curr2 = st1.query(curr1,n-1);
+                curr1 = st2.query(curr2,n-1);
+        }
+        string ans = string(n,'0');
+        for(int i = curr1; i < n; i++){
+                ans[a[i].second] = '1';
+        }
+        cout<<ans<<"\n";
+        
 }
 
 
