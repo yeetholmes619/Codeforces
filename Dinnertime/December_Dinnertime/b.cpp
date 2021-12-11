@@ -84,13 +84,39 @@ void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
+int n,m;
+vector<int> v;
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
+        cin>>n>>m;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        if(n == 1) {
+                cout<<0<<"\n";
+                return;
+        }
+        sort(allvec(v));
+        set<int> s;
+        if(m == 0){
+                for(auto t: v) s.insert(t);
+                if(s.size() == 1){
+                        cout<<0<<"\n";
+                }
+                else cout<<-1<<"\n";
+                return;
+        }
+        assert(m != 0);
+
+        int ans = 0;
+        for(int i = 1; i < n; i++){
+                ans += max((((v[i]- v[i-1]+m-1)/m)-1),0LL);
+        }
+        cout<<ans<<"\n";
 }
 
 

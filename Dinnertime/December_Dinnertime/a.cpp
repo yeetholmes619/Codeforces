@@ -86,11 +86,19 @@ void _print2(vector<T> v){
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
+string s;
+int a;
 void take(){
+        cin>>s>>a;
 }
 
 void solve(){
         take();
+        int ans = 0;
+        for(auto t: s){
+                ans += (int)t;
+        }
+        cout<<ans%a<<"\n";
 }
 
 

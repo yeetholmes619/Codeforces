@@ -84,13 +84,70 @@ void _print2(vector<T> v){
         for(auto t: v) _print(t);
 }
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
+int n;
+vector<int> v;
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
+vector<int> rd(int n)
+{
+	// Note that this loop runs till square root
+    vector<int> ans;
+	for (int i=1; i<=sqrt(n); i++)
+	{
+		if (n%i == 0)
+		{
+			// If divisors are equal, print only one
+			if (n/i == i){
+                    if(i != 1)ans.pb(i);
+            }
+			else {
+                    if(i != 1)ans.pb(i);
+                    if(n/i != 1)ans.pb(n/i);
+            }
+		}
+	}
+    return ans;
+}
+
 void take(){
+        cin>>n;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        int s =0;
+        for(auto t: v) s += t;
+        vector<int> cand;
+        cand = rd(s);
+        int ans = INT_MAX;
+        for(auto k: cand){
+                vector<int> dd = v;
+                int temp = 0;
+                for(int i = 0; i < n-1; i++){
+                        if(dd[i]%k != 0){
+                                for(int j = i+1; j < n; j++){
+                                        dd[j] += dd[j-1];
+                                        dd[j-1] = 0;
+                                        if(dd[j]%k == 0){
+                                                temp += j-i;
+                                                i = j;
+                                                break;
+                                        }
+                                }
+                        }
+                }
+                for(auto t: dd){
+                        if(t%k != 0){
+                                temp = INT_MAX;
+                                break;
+                        }
+                }
+                ans = min(ans,temp);
+        }
+        if(ans == INT_MAX) cout<<-1<<"\n";
+        else cout<<ans<<"\n";
 }
 
 
@@ -99,7 +156,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
