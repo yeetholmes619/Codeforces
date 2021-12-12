@@ -95,13 +95,82 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
+int n,k;
+vector<int> v;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
+        cin>>n>>k;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
+        sort(allvec(v));
+        debug(n,k,v);
+        int ans =0 ;
+       // for(int i  = 0; i < n; i++){
+       //         int en = min(i + k-1,n-1);
+       //         debug(i,en);
+       //         ans += abs(v[i]) + abs(v[en] - v[i]);
+       //         if(en != n-1) ans += abs(v[en]);
+       //         i = en;
+       // }
+     //  deque<int> dq;
+     //  for(auto t: v) dq.pb(t);
+     //  while(dq.size()){
+     //          if(dq.front() <= dq.back()){
+     //                  int st = dq.front();
+     //                  int n = dq.size();
+     //                  for(int i = 0 ;i < min(k-1,n-1); i++) dq.pop_front();
+     //                  int en = dq.front();
+     //                  dq.pop_front();
+     //                  ans += abs(st) + abs(en-st);
+     //                  if(dq.size() != 0)ans += abs(en);
+     //          }
+     //          else{
+     //                  int st = dq.back();
+     //                  for(int i = 0 ;i < min(k-1,n-1); i++) dq.pop_back();
+     //                  int en = dq.back();
+     //                  dq.pop_back();
+     //                  ans += abs(st) + abs(en-st);
+     //                  if(dq.size() != 0)ans += abs(en);
+     //          }
+     //  }
+     int st = 0;
+     int en = n-1;
+     while(st <= en){
+             int a1,a2;
+             a1 = min(en,st+k-1);
+             a2 = max(st,en-k+1);
+             if(a1 == en){
+                     if(st < 0 and en < 0){
+                             ans += abs(v[st]);
+                     }
+                     else if(st > 0 and en > 0){
+                             ans += abs(v[en]);
+                     }
+                     else{
+                             ans += v[en] - v[st];
+                     }
+                     break;
+             }
+             int ans1 = 0, ans2 = 0;
+             ans1 += abs(v[st]) + abs(v[a1] - v[st]) + abs(v[a1]);
+             ans2 += abs(v[a2]) + abs(v[en]-v[a2]) + abs(v[en]);
+             if(ans1 <= ans2){
+                     st += k;
+                     ans += ans1;
+             }
+             else{
+                     en -= k;
+                     ans += ans2;
+             }
+     }
+
+
+
+        cout<<ans<<"\n";
 }
 
 

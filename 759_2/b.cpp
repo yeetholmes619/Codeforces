@@ -95,13 +95,28 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
+int n;
+vector<int> v;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
+        take(v,n);
 }
 
 void solve(){
         take();
+        int mx = -1;
+        for(auto t: v) mx = max(mx,t);
+        int ans = 0;
+        int check = v.back();
+        for(int i =n-1; i > -1; i--){
+                if(v[i] > check){
+                        ans++;
+                        check = v[i];
+                }
+        }
+        cout<<ans<<"\n";
+
+
 }
 
 
