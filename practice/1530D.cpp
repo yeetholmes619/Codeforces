@@ -95,68 +95,60 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int n,a,b;
+int n;
+vector<int> v;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
-        cin>>n>>a>>b;
+        take(v,n);
 }
-
 void solve(){
         take();
-        debug(n,a,b);
-        if((a+b > n-2) or (abs(b-a) > 1)){
-                cout<<-1<<"\n";
-                return;
+        vector<int> f(n,-1);
+        map<int,int> w;
+        map<int,int> m;
+        for(int i = 0; i < n; i++) w[v[i]]++;
+        map<int,vector<int>> s;
+        for(int i = 0 ;i < n; i++){
+                s[v[i]].pb(i+1);
         }
-        vector<int> perm;
-        perm.pb(0);
-        if(a >= b){
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 1){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
+        for(int i = 1; i <= n; i++){
+                int cn = -1;
+                int mm = INT_MAX;
+                for(int j = 0; j < s[i].size(); j++){
+                        if(w[s[i][j]] < mm){
+                                cn = s[i][j];
+                                mm=  w[s[i][j]];
                         }
                 }
-                if(a != b)sort(perm.begin()+2*a,perm.end(),greater<int>());
-                else sort(perm.begin()+2*a,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
+                if(cn != -1){
+                        f[cn-1] = i;
+                        m[i]++;
+                }
         }
-        else{
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 0){
-                                perm.pb(cc_max);
-                                cc_max++;
+        deque<int> dd;
+        for(int i = 1; i <= n; i++){
+                if(m[i] == 0) dd.pb(i);
+        }
+        for(int i  =0; i  <n; i++){
+                if(f[i] == -1){
+                        if(dd.back() == i+1){
+                                f[i] = dd.front();
+                                dd.pop_front();
                         }
                         else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
+                                f[i] = dd.back();
+                                dd.pop_back();
                         }
                 }
-                sort(perm.begin()+2*b,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
         }
+        int ans= 0;
+        for(int i  =0; i < n; i++){
+                if(f[i] == v[i]) ans++;
+        }
+        cout<<ans<<"\n";
+        for(auto t: f) cout<<t<<" ";
+        cout<<"\n";
+
 }
 
 

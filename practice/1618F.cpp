@@ -95,68 +95,105 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int n,a,b;
+string decimalToBinary(int n)
+{
+    //finding the binary form of the number and
+    //converting it to string.
+    string s = bitset<64> (n).to_string();
+     
+    //Finding the first occurrence of "1"
+    //to strip off the leading zeroes.
+    const auto loc1 = s.find('1');
+     
+    if(loc1 != string::npos)
+        return s.substr(loc1);
+     
+    return "0";
+}
+int Substr(string s2, string s1)
+{
+    int counter = 0; // pointing s2
+    int i = 0;
+    for(;i<s1.length();i++)
+    {
+        if(counter==s2.length())
+            break;
+        if(s2[counter]==s1[i])
+        {
+            counter++;
+        }
+      else
+        {
+            // Special case where character preceding the i'th character is duplicate
+            if(counter > 0)
+            {
+                i -= counter;
+            }
+            counter = 0;
+        }
+    }
+    return counter < s2.length()?-1:i-counter;
+}
+bool f(string a, string b){
+        return Substr(a,b) != -1;
+}
+int x,y;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
-        cin>>n>>a>>b;
+        cin>>x>>y;
 }
 
 void solve(){
         take();
-        debug(n,a,b);
-        if((a+b > n-2) or (abs(b-a) > 1)){
-                cout<<-1<<"\n";
+        string a = decimalToBinary(x);
+        string b = decimalToBinary(y);
+        debug(a);
+        debug(b);
+        if(a == b){
+                cout<<"YES\n";
                 return;
         }
-        vector<int> perm;
-        perm.pb(0);
-        if(a >= b){
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 1){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
-                        }
-                }
-                if(a != b)sort(perm.begin()+2*a,perm.end(),greater<int>());
-                else sort(perm.begin()+2*a,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
+        string a2 = a + '1';
+        while(a.back() == '0') a.pop_back();
+        if(b.size() < a.size()){
+                cout<<"NO\n";
+                return;
         }
-        else{
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 0){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
-                        }
-                }
-                sort(perm.begin()+2*b,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
+        int tt = b.size() - a.size();
+        a += string(tt,'1');
+        a = string(tt,'1') + a;
+        debug(a);
+        debug(b);
+        if(f(b,a)){
+                cout<<"YES\n";
+                return;
         }
+        reverse(allvec(a));
+        if(f(b,a)){
+                cout<<"YES\n";
+                return;
+        }
+        tt = b.size() - a2.size();
+        if(b.size() < a2.size()){
+                cout<<"NO\n";
+                return;
+        }
+        a2 += string(tt,'1');
+        a2 = string(tt,'1') + a2;
+        if(f(b,a2)){
+                cout<<"YES\n";
+                return;
+        }
+        reverse(allvec(a2));
+        if(f(b,a2)){
+                cout<<"YES\n";
+                return;
+        }
+
+        cout<<"NO\n";
+        return;
+
+
 }
 
 
@@ -165,7 +202,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

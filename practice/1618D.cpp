@@ -94,69 +94,58 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 #endif
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
+map<int,int> m;
+bool cmp(int a, int b){
+        return m[a] > m[b];
+}
+bool cmp2(int a, int b){
+        return m[a] < m[b];
+}
+
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int n,a,b;
+int n,k;
+vector<int> v;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
-        cin>>n>>a>>b;
+        m.clear();
+        cin>>n>>k;
+        v.resize(n);
+        cinarr(v);
 }
 
 void solve(){
         take();
-        debug(n,a,b);
-        if((a+b > n-2) or (abs(b-a) > 1)){
-                cout<<-1<<"\n";
+        debug(n,k);
+        sort(allvec(v),greater<int>());
+        int ans =0 ;
+        for(auto t: v) ans += t;
+        if(k == 0){
+                cout<<ans<<"\n";
                 return;
         }
-        vector<int> perm;
-        perm.pb(0);
-        if(a >= b){
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 1){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
-                        }
-                }
-                if(a != b)sort(perm.begin()+2*a,perm.end(),greater<int>());
-                else sort(perm.begin()+2*a,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
+        set<int> s;
+        for(int i =0; i < 2*k; i++){
+                s.insert(v[i]);
+                m[v[i]]++;
+        }
+        vector<int> vv;
+        for(auto t: s) vv.pb(t);
+        sort(allvec(vv),cmp);
+        if(vv.size() == 1){
+                ans -= (vv[0]*m[vv[0]] - (m[vv[0]]/2));
+                cout<<ans<<"\n";
+                return;
         }
         else{
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 0){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
-                        }
-                }
-                sort(perm.begin()+2*b,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
+                for(auto t: vv) ans -= t*m[t];
+                int temp = 0;
+                for(int i = 1 ; i < vv.size(); i++) temp += m[vv[i]];
+                if(m[vv[0]] > temp) ans += (m[vv[0]] - temp)/2;
+                cout<<ans<<"\n";
+                return;
         }
+
+                
 }
 
 

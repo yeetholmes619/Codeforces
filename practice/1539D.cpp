@@ -95,68 +95,47 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int n,a,b;
+int n;
+vector<int> type;
+map<int,int> a;
+map<int,int> b;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
+bool cmp(int x, int y){
+        return b[x] < b[y];
+}
 void take(){
-        cin>>n>>a>>b;
+        cin>>n;
+        type.resize(n,1);
+        for(int i = 0; i < n; i++) type[i] += i;
+        for(int i = 0; i < n; i++){
+                cin>>a[type[i]]>>b[type[i]];
+        }
 }
 
 void solve(){
         take();
-        debug(n,a,b);
-        if((a+b > n-2) or (abs(b-a) > 1)){
-                cout<<-1<<"\n";
-                return;
-        }
-        vector<int> perm;
-        perm.pb(0);
-        if(a >= b){
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 1){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
-                        }
+        int st = 0;
+        int en = n-1;
+        sort(allvec(type),cmp);
+        int ans= 0;
+        int tot = 0;
+        while(st <= en){
+                if(a[type[en]] == 0) en--;
+                else if(a[type[st]] == 0) st++;
+                else if(tot >= b[type[st]]){
+                        ans += a[type[st]];
+                        tot += a[type[st]]; 
+                        a[type[st]] = 0;
                 }
-                if(a != b)sort(perm.begin()+2*a,perm.end(),greater<int>());
-                else sort(perm.begin()+2*a,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
-        }
-        else{
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 0){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
-                        }
+                else{
+                        int temp = min(a[type[en]],b[type[st]]-tot);
+                        ans += 2*temp;
+                        a[type[en]] -= temp;
+                        tot += temp;
                 }
-                sort(perm.begin()+2*b,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
         }
+        cout<<ans<<"\n";
+
 }
 
 
@@ -165,7 +144,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

@@ -95,68 +95,42 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int n,a,b;
+int n,m;
+string s;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
-        cin>>n>>a>>b;
+        cin>>n>>m;
+        cin>>s;
 }
 
 void solve(){
         take();
-        debug(n,a,b);
-        if((a+b > n-2) or (abs(b-a) > 1)){
-                cout<<-1<<"\n";
-                return;
-        }
-        vector<int> perm;
-        perm.pb(0);
-        if(a >= b){
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 1){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
-                        }
+        int l = 0, r= 0, u = 0,  d= 0;
+        int cv =0 , ch = 0;
+        for(int i  =0; i < s.size(); i++){
+                if(s[i] == 'L'){
+                        if(r-min(l,ch-1) > m-1) break;
+                        ch--;
+                        l = min(l,ch);
                 }
-                if(a != b)sort(perm.begin()+2*a,perm.end(),greater<int>());
-                else sort(perm.begin()+2*a,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
-        }
-        else{
-                int cc_max = 1;
-                int cc_min = 1;
-                for(int i= 1; i < n; i++){
-                        if(i%2 == 0){
-                                perm.pb(cc_max);
-                                cc_max++;
-                        }
-                        else{
-                                perm.pb(-1*cc_min);
-                                cc_min++;
-                        }
+                if(s[i] == 'R'){
+                        if(max(r,ch+1)-l > m-1) break;
+                        ch++;
+                        r = max(r,ch);
                 }
-                sort(perm.begin()+2*b,perm.end());
-                int k = INT_MAX;
-                for(int i = 0; i < n; i++) k = min(k,perm[i]);
-                k = abs(k);
-                debug(k,perm);
-                for(auto &t: perm) t += k+1;
-                debug(perm);
-                for(auto t: perm) cout<<t<<" ";
-                cout<<"\n";
+                if(s[i] == 'U'){
+                        if(max(u,cv+1)-d > n-1) break;
+                        cv++;
+                        u = max(u,cv);
+                }
+                if(s[i] == 'D'){
+                        if(u-min(d,cv-1) > n-1) break;
+                        cv--;
+                        d = min(d,cv);
+                }
         }
+        cout<<u+1<<" "<<m-r<<"\n";
+                        
 }
 
 
