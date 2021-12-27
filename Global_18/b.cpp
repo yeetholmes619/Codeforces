@@ -119,33 +119,43 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int n,k;
+int l,r;
+int n;
+vector<vector<int>> v(200006,vector<int>(64,0));
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
-int bin(int l, int r, int ans){
-        r++;
-        while(r-l > 0){
-                int mid = l+(r-l)/2;
-                debug(l,r,mid,ans);
-                if(mid == k) return ans; 
-                if(k < mid){
-                        r = mid;
-                        ans--;
-                }
-                else{
-                        l = mid+1;
-                        ans--;
-                }
+int sz(int x){
+        int pos = -1;
+        for(int i =0 ; i <= 49; i++){
+                if((1LL<<i)&x) pos = i;
         }
-        return ans;
+        assert(pos != -1);
+        return pos;
+}
+string decimalToBinary(int n)
+{
+    //finding the binary form of the number and
+    //converting it to string.
+    string s = bitset<64> (n).to_string();
+
+    //Finding the first occurrence of "1"
+    //to strip off the leading zeroes.
+    return s;
+
 }
 void take(){
-        cin>>n>>k;
+        cin>>l>>r;
+        debug(l,r);
 }
 
 void solve(){
         take();
-        debug(n,k);
-        cout<<bin(1,2*n+1,n)<<"\n";
+        mii m;
+        int ans = 0;
+                ans = max(ans,v[r][i] - v[l-1][i]);
+        }
+        debug(r,l,ans);
+        cout<<r-l+1-ans<<"\n";
+
 }
 
 
@@ -153,7 +163,13 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     auto time0 = curtime;
+    for(int i = 1; i <= 200005; i++){
+            for(int j = 0; j < 64; j++){
+                    v[i][j] = ((i&(1LL<<j)) != 0) + v[i-1][j];
+            }
+    }
 	ll t = 1;
+	cin >> t;
 	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

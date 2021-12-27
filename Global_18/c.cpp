@@ -119,33 +119,44 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int n,k;
+int n;
+string s1;
+string s2;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
-int bin(int l, int r, int ans){
-        r++;
-        while(r-l > 0){
-                int mid = l+(r-l)/2;
-                debug(l,r,mid,ans);
-                if(mid == k) return ans; 
-                if(k < mid){
-                        r = mid;
-                        ans--;
-                }
-                else{
-                        l = mid+1;
-                        ans--;
-                }
-        }
-        return ans;
-}
 void take(){
-        cin>>n>>k;
+        cin>>n>>s1>>s2;
 }
 
 void solve(){
         take();
-        debug(n,k);
-        cout<<bin(1,2*n+1,n)<<"\n";
+        int wa1 = 0,wa0=  0,ac1= 0,ac0= 0;
+        fu(i,0,n-1){
+                if(s1[i] == '1'){
+                        if(s2[i] == '0') wa1++;
+                        else ac1++;
+                }
+                else{
+                        if(s2[i] == '0') ac0++;
+                        else wa0++;
+                }
+        }
+        debug(ac0,ac1,wa1,wa0);
+        int ans = INT_MAX;
+        if(wa1+wa0 == 0){
+                cout<<0<<"\n";
+                return;
+        }
+        if(ac1 == 1+ac0){
+                ans = min(ans,ac1+ac0);
+        }
+        if(wa1 == wa0){
+                ans = min(ans,wa1+wa0);
+        }
+        if(ans == INT_MAX){
+                cout<<-1<<"\n";
+                return;
+        }
+        else cout<<ans<<"\n";
 }
 
 
@@ -154,6 +165,7 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
+	cin >> t;
 	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

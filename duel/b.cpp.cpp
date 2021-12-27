@@ -119,33 +119,13 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int n,k;
+
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
-int bin(int l, int r, int ans){
-        r++;
-        while(r-l > 0){
-                int mid = l+(r-l)/2;
-                debug(l,r,mid,ans);
-                if(mid == k) return ans; 
-                if(k < mid){
-                        r = mid;
-                        ans--;
-                }
-                else{
-                        l = mid+1;
-                        ans--;
-                }
-        }
-        return ans;
-}
 void take(){
-        cin>>n>>k;
 }
 
 void solve(){
         take();
-        debug(n,k);
-        cout<<bin(1,2*n+1,n)<<"\n";
 }
 
 
@@ -154,6 +134,7 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
+	cin >> t;
 	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
