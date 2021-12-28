@@ -119,13 +119,54 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
+int n,k;
+vi v;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
+        cin>>n>>k;
+        v.resize(n);
+        cin>>v;
 }
 
 void solve(){
         take();
+        sort(allvec(v));
+        debug(v);
+        int magic = k/n;
+        int ss = 0;
+        int ans= 0 ;
+        for(auto t: v) ss += t;
+        debug(ss);
+        if(ss <= k){
+                cout<<0<<"\n";
+                return;
+        }
+        vi dp(n+5,0);
+        dp[1] = k-ss+v[0];
+        int pr = 0;
+        for(int i = 2; i <= n; i++){
+                pr += v[n-i+1];
+                //ss-(pr+v[0]) + i*l <= k
+                //(k-ss+(pr[v[0]]))/i;
+                debug(i,pr);
+                int temp = (k-ss+(pr+v[0])); 
+                if(temp < 0){
+                        if((temp*-1)%i != 0){
+                                temp = temp/i -1;
+                        }
+                        else temp /= i;
+                }
+                else temp /= i;
+                dp[i] = temp;
+        }
+        debug(dp);
+        ans = INT_MAX;
+        for(int i = 1; i <= n; i++){
+                ans = min(ans,i-1+max(v[0]-dp[i],0LL));
+        }
+        cout<<ans<<"\n";
+
+
 }
 
 

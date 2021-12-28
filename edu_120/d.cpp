@@ -119,13 +119,118 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
+int n,k;
+string s;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
-void take(){
+unsigned long long power(unsigned long long x,
+                                  int y, int p)
+{
+    unsigned long long res = 1; // Initialize result
+
+    x = x % p; // Update x if it is more than or
+    // equal to p
+
+    while (y > 0)
+    {
+
+        // If y is odd, multiply x with result
+        if (y & 1)
+            res = (res * x) % p;
+
+        // y must be even now
+        y = y >> 1; // y = y/2
+        x = (x * x) % p;
+    }
+    return res;
 }
 
+// Returns n^(-1) mod p
+unsigned long long modInverse(unsigned long long n,
+                                            int p)
+{
+    return power(n, p - 2, p);
+}
+
+// Returns nCr % p using Fermat's little
+// theorem.
+unsigned long long nCr(unsigned long long n,
+                                 int r, int p)
+{
+    // If n<r, then nCr should return 0
+    if (n < r)
+        return 0;
+    // Base case
+    if (r == 0)
+        return 1;
+
+    // Fill factorial array so that we
+    // can find all factorial of r, n
+    // and n-r
+    unsigned long long fac[n + 1];
+    fac[0] = 1;
+    for (int i = 1; i <= n; i++)
+        fac[i] = (fac[i - 1] * i) % p;
+
+    return (fac[n] * modInverse(fac[r], p) % p
+            * modInverse(fac[n - r], p) % p)
+           % p;
+}
+
+void take(){
+        cin>>n>>k>>s;
+}
+const int md = 998244353;
 void solve(){
         take();
+        debug(n,k,s);
+        if(k == 0){
+                cout<<1<<"\n";
+                return;
+        }
+        vector<pii> sp;
+        vi pr(n,0);
+        fu(i,0,n-1){
+                pr[i] = (s[i] == '1');
+        }
+        fu(i,1,n-1) pr[i] += pr[i-1];
+        int st = 0;
+        int en = 0;
+        while(en < n and st < n){
+                int tt = -1;
+                while(en < n and (pr[en]-pr[st]+(s[st] == '1') < k+1)){
+                        if(s[en] == '1') tt= en;
+                        en++;
+                }
+                en--;
+                if(en >= n) break;
+                if(pr[en]-pr[st]+(s[st]=='1') != k) break;
+                debug(st,en);
+                sp.pb({st,en});
+                //st++;
+                if(s[st] == '1')st++;
+                else st =  tt+1;
+                en = st;
+        }
+        int ans= 0;
+        debug(sp);
+        for(auto t: sp){
+                ans += (nCr(t.second-t.first+1,k,md)-1);
+                ans %= md;
+        }
+        int nn = sp.size();
+        for(int i = 1; i < nn; i++){
+                if(sp[i].first <= sp[i-1].second){
+                        if(pr[sp[i-1].second] - pr[sp[i].first]+(s[sp[i].first] == '1') == k){
+                                int temp = nCr(sp[i-1].second - sp[i].first+1,k,md)-1;
+                                ans -= temp;
+                                ans += md;
+                                ans %= md;
+                        }
+                }
+        }
+
+        cout<<ans;
+
 }
 
 
@@ -134,7 +239,6 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();

@@ -119,13 +119,46 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
+int n;
+vi v;
+string s;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
+        cin>>n;
+        v.resize(n);
+        cin>>v;
+        cin>>s;
 }
 
 void solve(){
         take();
+        debug(n,v,s);
+        int c = 0;
+        for(auto t: s) c += (t=='0');
+        vector<int> ans = v;
+        sort(allvec(ans));
+        debug(ans);
+        vector<pair<int,int>> l;
+        vector<pair<int,int>> w;
+        for(int i =0 ; i < n; i++){
+                if(s[i] == '0'){
+                        l.pb({v[i],i});
+                }
+                else w.pb({v[i],i});
+        }
+        vi fin(n,0);
+        sort(allvec(l));
+        sort(allvec(w));
+        debug(l,w);
+        for(int i = 0; i < c; i++){
+                fin[l[i].second] = ans[i];
+        }
+        for(int i = c; i < n; i++){
+                fin[w[i-c].second] = ans[i];
+        }
+        for(auto t: fin)cout<<t<<" ";
+        cout<<"\n";
+
 }
 
 
