@@ -119,13 +119,56 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
+int n;
+vector<pii> v;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
+        cin>>n;
+        v.resize(n);
+        cin>>v;
 }
 
 void solve(){
         take();
+        vi ans(n,-1);
+        map<pii,int> m;
+        fu(i,0,n-1) m[v[i]] = i;
+        sort(allvec(v),[&](pii a, pii b){
+                if(a.first == b.first) return a.second < b.second;
+                return a.first< b.first;
+                });
+        debug(v);
+        fd(i,n-1,1){
+                if(v[i].first == v[i-1].first){
+                        ans[m[v[i]]] = v[i-1].second+1;
+                }
+        }
+      //  fu(i,0,n-1){
+      //          int l1 = v[i].first;
+      //          int r1 = v[i].second;
+      //          int sz = r1-l1+1;
+      //          if(ans[m[v[i]]] == -1){
+      //                  fu(j,0,n-1){
+      //                          if(i == j) continue;
+      //                          int l2 = v[j].first;
+      //                          int r2 = v[j].second;
+      //                          int sz2 = r2-l2+1;
+      //                          if(l2 == l1)
+      //                  }
+      //          }
+      //  }
+      for(auto t: v){
+              if(ans[m[t]] == -1) ans[m[t]] = t.first;
+      }
+      for(auto t: v){
+              cout<<t.first<<" "<<t.second<<" "<<ans[m[t]]<<"\n";
+      }
+      cout<<"\n";
+              
+
+
+
+
 }
 
 

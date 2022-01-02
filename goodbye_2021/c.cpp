@@ -122,36 +122,6 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 int n;
 vi v;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
-bool f(int x){
-        int k = x;
-        vi vv = v;
-        for(int i = n-1; i  > 1; i--){
-                if(vv[i] < k) return false;
-                int d = (vv[i]-k)/3;
-                d = min(d,v[i]/3);
-                vv[i-1] += d;
-                vv[i-2] += 2*d;
-                if(vv[i] < k) return false;
-        }
-        if((vv[0] < k) or (vv[1] < k)) return false;
-        return true;
-}
-
-template <class Integer, class F>
-Integer find_first_false(Integer start, Integer end, F &&f){
-        start--;
-        end++;
-        while(end-start > 1){
-                Integer mid = start + (end - start)/2;
-                if(f(mid) == false){
-                        end = mid;
-                }
-                else{
-                        start = mid;
-                }
-        }
-        return start;
-}
 void take(){
         cin>>n;
         v.resize(n);
@@ -160,13 +130,27 @@ void take(){
 
 void solve(){
         take();
-        int a = 1e10;
-        int b = -1*a;
-        for(auto t: v){
-                b = max(b,t);
-                a = min(a,t);
+        if(n <= 2){
+                cout<<0<<"\n";
+                return;
         }
-        cout<<find_first_false(a,b,f)<<"\n";
+        int ans = 1e6;
+        //d = (b-a)/(n-1);
+        for(int i = 0; i < n; i++){
+                for(int j = i+1; j < n; j++){
+                        int tt = 0;
+                        int num = v[j]-v[i];
+                        int den = j-i;
+                        for(int k = i+1; k < n; k++){
+                                if(den*v[i]+num*(k-i)!= den*v[k]) tt++;
+                        }
+                        for(int k = i-1; k > -1 ; k--){
+                                if(den*v[i]+num*(k-i)!= den*v[k]) tt++;
+                        }
+                        ans=  min(ans,tt);
+                }
+        }
+        cout<<ans<<"\n";
 
 }
 

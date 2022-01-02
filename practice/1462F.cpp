@@ -120,38 +120,8 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
 int n;
-vi v;
+vector<pii> v;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
-bool f(int x){
-        int k = x;
-        vi vv = v;
-        for(int i = n-1; i  > 1; i--){
-                if(vv[i] < k) return false;
-                int d = (vv[i]-k)/3;
-                d = min(d,v[i]/3);
-                vv[i-1] += d;
-                vv[i-2] += 2*d;
-                if(vv[i] < k) return false;
-        }
-        if((vv[0] < k) or (vv[1] < k)) return false;
-        return true;
-}
-
-template <class Integer, class F>
-Integer find_first_false(Integer start, Integer end, F &&f){
-        start--;
-        end++;
-        while(end-start > 1){
-                Integer mid = start + (end - start)/2;
-                if(f(mid) == false){
-                        end = mid;
-                }
-                else{
-                        start = mid;
-                }
-        }
-        return start;
-}
 void take(){
         cin>>n;
         v.resize(n);
@@ -160,14 +130,17 @@ void take(){
 
 void solve(){
         take();
-        int a = 1e10;
-        int b = -1*a;
+        vi L;
+        vi R;
         for(auto t: v){
-                b = max(b,t);
-                a = min(a,t);
+                L.pb(t.first);
+                R.pb(t.second);
         }
-        cout<<find_first_false(a,b,f)<<"\n";
-
+        sort(allvec(L),greater<int>());
+        sort(allvec(R));
+        int ans= INT_MAX;
+        for(auto t: v){
+                auto i = upper_bound()
 }
 
 

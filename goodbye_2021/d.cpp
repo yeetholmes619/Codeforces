@@ -121,52 +121,95 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
 int n;
 vi v;
+int x;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
-bool f(int x){
-        int k = x;
-        vi vv = v;
-        for(int i = n-1; i  > 1; i--){
-                if(vv[i] < k) return false;
-                int d = (vv[i]-k)/3;
-                d = min(d,v[i]/3);
-                vv[i-1] += d;
-                vv[i-2] += 2*d;
-                if(vv[i] < k) return false;
-        }
-        if((vv[0] < k) or (vv[1] < k)) return false;
-        return true;
-}
-
-template <class Integer, class F>
-Integer find_first_false(Integer start, Integer end, F &&f){
-        start--;
-        end++;
-        while(end-start > 1){
-                Integer mid = start + (end - start)/2;
-                if(f(mid) == false){
-                        end = mid;
-                }
-                else{
-                        start = mid;
-                }
-        }
-        return start;
-}
 void take(){
         cin>>n;
         v.resize(n);
         cin>>v;
+        cin>>x;
 }
+class st{
+        public:
+        int l,r;
+        int ss;
+        st(){
+                l = -1;
+                r = -1;
+                ss = 0;
+        }
+        st(int ind){
+                l = ind;
+                r=  ind;
+                ss = v[ind];
+        }
+        int sz(){
+                return r-l+1;
+        }
 
+};
 void solve(){
         take();
-        int a = 1e10;
-        int b = -1*a;
-        for(auto t: v){
-                b = max(b,t);
-                a = min(a,t);
+        vector<int> ans(n,0);
+        int c = 0;
+        for(int i = 0; i < n; i++){
+                if(v[i] >= x) {
+                        ans[i] = 1;
+                        c++;
+                }
         }
-        cout<<find_first_false(a,b,f)<<"\n";
+        debug(v);
+        if(c == 0){
+                cout<<(n+1)/2<<"\n";
+                return;
+        }
+        vi pref(n,0);
+        pref[0] = v[0];
+        debug(ans);
+        for(int i = 1; i < n; i++) pref[i] = v[i]+pref[i-1];
+        vector<st> v1;
+        for(int i = 0; i < n; i++){
+                if(ans[i] == 1){
+                        int sst = i;
+                        for(int j = i; j < n; j++){
+                                if(ans[j] == 1) sst = j;
+                                else break;
+                        }
+                        st temp;
+                        temp.l = i;
+                        temp.r = sst;
+                        debug(temp.l,temp.r);
+                        temp.ss = pref[sst]-pref[i]+v[i];
+                        v1.pb(temp);
+                        i = sst;
+                }
+        }
+        for(auto t: v1){
+                int xx= t.sz();
+                int ff = t.r;
+                for(int i= t.r+1; i < n; i++){
+                        if((ans[i] == 0) and ((t.ss+v[i]) >= x*(xx+i-t.r))){
+                                ff= i;
+                                t.ss += v[i];
+                                ans[i] = 1;
+                        }
+                }
+                xx= t.sz();
+                int bb = t.l;
+                t.r = ff;
+        }
+        for(int i = n-1; i > 0; i--){
+                if((ans[i-1] == 0) and (ans[i] == 1)){
+                        if((v[i]+v[i-1]) >= x*2) ans[i-1] =1;
+                }
+        }
+        int fin = 0;
+        for(auto t: ans) fin += t;
+        cout<<fin<<"\n";
+
+
+
+
 
 }
 

@@ -119,13 +119,29 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-
+int n,m,rb,cb,rd,cd;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
+        cin>>n>>m>>rb>>cb>>rd>>cd;
 }
 
 void solve(){
         take();
+        int ans = INT_MAX;
+        if(rd >= rb){
+                ans = min(ans,rd-rb);
+        }
+        else{
+                ans = min(ans,n-rb+n-rd);
+        }
+        if(cd >= cb){
+                ans = min(ans,cd-cb);
+        }
+        else{
+                ans = min(ans,m-cb+m-cd);
+        }
+        cout<<ans<<"\n";
+
 }
 
 
