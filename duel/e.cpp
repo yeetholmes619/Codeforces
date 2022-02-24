@@ -15,98 +15,174 @@ using namespace std;
 #define INF 1000000007
 #define pb push_back
 #define pf push_front
+#define fu(i,a,b) for(int i = a; i <= b; i++)
+#define fd(i,a,b) for(int i = a; i >= b; i--)
+#define vi vector<int>
+#define vpii vector<pair<int,int>>
+#define vs vector<string>
+#define pii pair<int,int>
+#define mii map<int,int>
+#define mci map<char,int>
+#define y0 sdkfaslhagaklsldk
+#define y1 aasdfasdfasdf
+#define yn askfhwqriuperikldjk
+#define j1 assdgsdgasghsf
+#define tm sdfjahlfasfh
+#define lr asgasgash
+#define norm asdfasdgasdgsd
+#define sz(x) (int)(x.size())
+#define left asdgashgrketwjklrej
+#define have adsgagshdshfhds
+#define ends asdgahhfdsfshdshfd
+#define prev asdgSHJsfgsdfhdsh
+#define umap unordered_map
 #define cinarr(a) for(auto &zz:a)cin>>zz
 #define mp make_pair
 #define allvec(v) v.begin(), v.end()
-/**
- * I/O
- **/
 #define int long long
-#define output(value) cout << value << endl
+#define output(value) cout << value << "\n"
 #define error(errorString) cout << BR << errorString << RESET<< "\n"
 #define info(infoString) cout << BB << infoString << RESET << "\n"
 #define success(successString) cout << BB << successString << RESET << "\n"
 #define allarr(a,n) a, a+n
-#define MOD 1000000007
+const int mod1 =1000000007;
+const int mod2 = 998244353;
 // precedence order :- double > float > long long int > long int > int > char
 // remember that boolean arrays and variables if uninitialized are given false
+// say x is a character, s += x is faster than s = s+x
 //Check if constraints are correct
 // for single arrays declare them as long long int
 //overflow must be taken care of!! use strings when big
 //	0 < |int| < 1e9
-//	0 < |long int| < 1e12
 //	0 < |long long int| < 1e18
 //when you are working with stacks, remember to take care of stacks of 0 size
 //when you see a problem, and you know how you would tackle it in the real world, but don't know how
 //you would do it in code, go step by step, in each step try to be concious of what you want to do
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
-template<class T>
-void debug(vector<T> v){
-        for(auto t: v) cerr<<BR<<t<<" "<<RESET;
-        cerr<<"\n";
+template<typename T1, typename T2> // cin >> pair<T1, T2>
+istream& operator>>(istream &istream, pair<T1, T2> &p) { return (istream >> p.first >> p.second); } 
+template<typename T> // cin >> vector<T>
+istream& operator>>(istream &istream, vector<T> &v)
+{
+	for (auto &it : v)
+		cin >> it;
+	return istream;
 }
-template <class T>
-void _print(vector<T> v){
-        for(auto t: v) cout<<t<<" ";
-        cout<<"\n";
-}
-template <class T>
-void _print(T k){
-        cout<<k<<"\n";
-}
-template <class T>
-void _print2(vector<T> v){
-        for(auto t: v) _print(t);
-}
-int n,p;
-vector<int> l;
-vector<int> r;
-void take(){
-        cin>>n>>p;
-        l.resize(n);
-        r.resize(n);
-        for(int i = 0; i < n; i++){
-                cin>>l[i]>>r[i];
+ 
+template<typename T1, typename T2> // cout << pair<T1, T2>
+ostream& operator<<(ostream &ostream, const pair<T1, T2> &p) { return (ostream << p.first << " " << p.second); }
+template<typename T> // cout << vector<T>
+ostream& operator<<(ostream &ostream, const vector<T> &c) { for (auto &it : c) cout << it << " "; return ostream; }
+ 
+//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\DEBUG/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
+void __print(long x) {cerr << x;}
+void __print(long long x) {cerr << x;}
+void __print(unsigned x) {cerr << x;}
+void __print(unsigned long x) {cerr << x;}
+void __print(unsigned long long x) {cerr << x;}
+void __print(float x) {cerr << x;}
+void __print(double x) {cerr << x;}
+void __print(long double x) {cerr << x;}
+void __print(char x) {cerr << '\'' << x << '\'';}
+void __print(const char *x) {cerr << '\"' << x << '\"';}
+void __print(const string &x) {cerr << '\"' << x << '\"';}
+void __print(bool x) {cerr << (x ? "true" : "false");}
+
+template<typename T, typename V>
+void __print(const pair<T, V> &x) {cerr << '{'; __print(x.first); cerr << ','; __print(x.second); cerr << '}';}
+template<typename T>
+void __print(const T &x) {int f = 0; cerr << '{'; for (auto &i: x) cerr << (f++ ? "," : ""), __print(i); cerr << "}";}
+void _print() {cerr << "]\n"<<RESET;}
+template <typename T, typename... V>
+void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v...);}
+#ifdef DEBUG
+#define debug(x...) cerr <<BR<< "[" << #x << "] = ["; _print(x)
+#else
+#define debug(x...)
+#endif
+
+//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
+struct task{
+        int destination;
+        int time;
+        task(){
+                destination = 0;
+                time = 0;
         }
-}
+};
+struct task_ongoing{
+        int starting_point;
+        int ending_point;
+        int start_time;
+        int end_time;
+        task_ongoing(task k, int pt){
+                starting_point = pt;
+                ending_point = k.destination;
+                start_time = k.time;
+                end_time = k.time+abs(pt-k.destination);
+        }
+        int process(task tt){
+                if(tt.time >= end_time){
+                        start_time = tt.time;
+                        int temp = ending_point;
+                        ending_point = tt.destination;
+                        starting_point =temp;
+                        end_time = start_time+abs(ending_point-starting_point);
+                        return temp;
+                }
+                else{
+                        return starting_point+(((ending_point-starting_point)*(tt.time-start_time))/(end_time-start_time));
+                }
+        }
+
+};
+//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
+int n;
+vector<task> v;
+//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
+void take(){
+        cin>>n;
+        v.resize(n);
+        for(int i = 0; i < n; i++){
+                cin>>v[i].time>>v[i].destination;
+        }
+ }
 
 void solve(){
         take();
-        vector<double> pp(n,0);
-        for(int i = 2; i< n-1; i++){
-                double a = r[i+1]/p - (l[i+1]+p-1)/p + 1;
-                double b = r[i]/p - (l[i]+p-1)/p + 1;
-                double c = r[i-1]/p - (l[i-1]+p-1)/p + 1;
-                pp[i] += ((b/(r[i]-l[i]+1)) * (1.0/(r[i+1]-l[i+1]+1))) + ((1.0/(r[i]-l[i]+1)) * (a/(r[i+1]-l[i+1]+1)));
-                pp[i] += ((b/(r[i]-l[i]+1)) * (1.0/(r[i-1]-l[i-1]+1))) + ((1.0/(r[i]-l[i]+1)) * (c/(r[i-1]-l[i-1]+1)));
-        }
-                double a = r[1]/p - (l[1]+p-1)/p + 1;
-                double b = r[0]/p - (l[0]+p-1)/p + 1;
-                double c = r[n-1]/p - (l[n-1]+p-1)/p + 1;
-                pp[0] += ((b/(r[0]-l[0]+1)) * (1.0/(r[1]-l[1]+1))) + ((1.0/(r[0]-l[0]+1)) * (a/(r[1]-l[1]+1)));
-                pp[0] += ((b/(r[0]-l[0]+1)) * (1.0/(r[n-1]-l[n-1]+1))) + ((1.0/(r[0]-l[0]+1)) * (c/(r[n-1]-l[n-1]+1)));
-                 a = r[n-2]/p - (l[n-2]+p-1)/p + 1;
-                 b = r[n-1]/p - (l[n-1]+p-1)/p + 1;
-                 c = r[0]/p - (l[0]+p-1)/p + 1;
-                pp[n-1] += ((b/(r[n-1]-l[n-1]+1)) * (1.0/(r[0]-l[0]+1))) + ((1.0/(r[n-1]-l[n-1]+1)) * (a/(r[0]-l[0]+1)));
-                pp[n-1] += ((b/(r[n-1]-l[n-1]+1)) * (1.0/(r[n-2]-l[n-2]+1))) + ((1.0/(r[n-1]-l[n-1]+1)) * (c/(r[n-2]-l[n-2]+1)));
-        double ans = 0;
-        for(auto t: pp) ans += 1000*t;
-        cout<<ans<<"\n";
+        task_ongoing t = task_ongoing(v[0],0LL);
+        task last;
+        last.time = 1e18;
+        last.destination=0;
+        v.pb(last);
 
+        vi d(n+1,0);
+        for(int i  =1; i < n+1; i++){
+                d[i] = t.process(v[i]);
+        }
+        debug(d);
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+                debug(i,v[i].destination);
+                if((v[i].destination >= min(d[i],d[i+1])) and(v[i].destination <= max(d[i+1],d[i]))) ans++;
+        }
+
+        cout<<ans<<"\n";
 }
 
 
 int32_t main() {
-        cout<<setprecision(8)<<fixed;
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	for(int i = 0 ; i < t; i++) {
+	cin >> t;
+	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}
-    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
+#ifdef DEBUG
+    cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
+#endif
 }

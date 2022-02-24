@@ -18,9 +18,11 @@ using namespace std;
 #define fu(i,a,b) for(int i = a; i <= b; i++)
 #define fd(i,a,b) for(int i = a; i >= b; i--)
 #define vi vector<int>
+#define vpii vector<pair<int,int>>
 #define vs vector<string>
 #define pii pair<int,int>
 #define mii map<int,int>
+#define mci map<char,int>
 #define y0 sdkfaslhagaklsldk
 #define y1 aasdfasdfasdf
 #define yn askfhwqriuperikldjk
@@ -28,6 +30,7 @@ using namespace std;
 #define tm sdfjahlfasfh
 #define lr asgasgash
 #define norm asdfasdgasdgsd
+#define sz(x) (int)(x.size())
 #define left asdgashgrketwjklrej
 #define have adsgagshdshfhds
 #define ends asdgahhfdsfshdshfd
@@ -36,18 +39,17 @@ using namespace std;
 #define cinarr(a) for(auto &zz:a)cin>>zz
 #define mp make_pair
 #define allvec(v) v.begin(), v.end()
-/**
- * I/O
- **/
 #define int long long
 #define output(value) cout << value << "\n"
 #define error(errorString) cout << BR << errorString << RESET<< "\n"
 #define info(infoString) cout << BB << infoString << RESET << "\n"
 #define success(successString) cout << BB << successString << RESET << "\n"
 #define allarr(a,n) a, a+n
-#define MOD 1000000007
+const int mod1 =1000000007;
+const int mod2 = 998244353;
 // precedence order :- double > float > long long int > long int > int > char
 // remember that boolean arrays and variables if uninitialized are given false
+// say x is a character, s += x is faster than s = s+x
 //Check if constraints are correct
 // for single arrays declare them as long long int
 //overflow must be taken care of!! use strings when big
@@ -58,25 +60,8 @@ using namespace std;
 //you would do it in code, go step by step, in each step try to be concious of what you want to do
 //and once you have done so, review through and remember what data structure would be perfect
 //when we pass an array in a function the pointer is passed but when we pass a vector, a copy is passed
-template<class T>
-void take(vector<T> &v, int &n){
-        cin>>n;
-        v.resize(n);
-        cinarr(v);
-}
-template<class T>
-void take(vector<vector<T>> &v, int &n, int &m ){
-        cin>>n>>m;
-        v.resize(n,vector<T>(m));
-        for(int i =0 ;i < n; i++){
-                for(int j = 0; j < m; j++){
-                        cin>>v[i][j];
-                }
-        }
-}
 template<typename T1, typename T2> // cin >> pair<T1, T2>
-istream& operator>>(istream &istream, pair<T1, T2> &p) { return (istream >> p.first >> p.second); }
- 
+istream& operator>>(istream &istream, pair<T1, T2> &p) { return (istream >> p.first >> p.second); } 
 template<typename T> // cin >> vector<T>
 istream& operator>>(istream &istream, vector<T> &v)
 {
@@ -119,21 +104,33 @@ void _print(T t, V... v) {__print(t); if (sizeof...(v)) cerr << ", "; _print(v..
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\GLOBAL VARIABLES/\/\/\/\/\/\/\/\/\/\/\/\///\/\/
-int x,y,a,b;
+string s;
+int n;
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\///\/\/\/\/\/\/
 void take(){
-        cin>>x>>y>>a>>b;
-
+        cin>>n;
+        cin>>s;
 }
 
 void solve(){
         take();
-        int d = y-x-1;
-        if(d==-1){
-                cout<<0<<"\n";
-                return;
+        debug(s);
+        int sum = 0;
+        int l=0;
+        for(auto t: s){
+                if(t == '+'){
+                        sum+=1;
+                }
+                else{
+                        sum -=1;
+                }
+                l = min(l,sum);
         }
-        
+        debug(sum,l);
+        int st= -1*l;
+        cout<<st+sum;
+
+
 }
 
 
@@ -142,10 +139,11 @@ int32_t main() {
     cin.tie(NULL);
     auto time0 = curtime;
 	ll t = 1;
-	cin >> t;
 	for(int i = 1 ; i <= t; i++) {
 		//cout << "Case #" << i << ": ";
 		solve();
 	}
-    //cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
+#ifdef DEBUG
+    cerr<<"Execution Time: "<<timedif(time0,curtime)*1e-9<<" sec\n";
+#endif
 }
